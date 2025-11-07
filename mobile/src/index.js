@@ -4,7 +4,7 @@ import { Core } from '@walletconnect/core';
 import { notificationService } from './notificationService.js';
 
 const PROJECT_ID = process.env.WC_PROJECT_ID || 'YOUR_PROJECT_ID';
-const SUNFLOWER_URL = 'https://play.sunflower-land.com';
+const SUNFLOWER_URL = 'https://sunflower-land.com/play/?ref=iSPANK';
 
 let web3wallet = null;
 let signClient = null;
