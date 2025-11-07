@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Debug Log ScrollView -->
+    <ScrollView
+        android:id="@+id/debug_log_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="32dp">
+
+        <TextView
+            android:id="@+id/debug_log_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading debug log..."
+            android:textSize="12sp"
+            android:fontFamily="monospace"
+            android:textColor="@android:color/darker_gray"
+            android:padding="8dp"
+            android:textIsSelectable="true" />
+
+    </ScrollView>
+
+    <!-- Button Container with spacing from bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="40dp">
+
+        <!-- Export Button -->
+        <Button
+            android:id="@+id/export_debug_log_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Export Log"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_blue_dark"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Clear Button -->
+        <Button
+            android:id="@+id/clear_debug_log_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear Debug Log"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_red_dark" />
+
+    </LinearLayout>
+
+</LinearLayout>

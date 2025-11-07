@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat
+        android:key="category_animal_sick"
+        android:title="Sick Animals"
+        android:summary="Get notified when your animals get sick"
+        android:defaultValue="true" />
+    
+    <SwitchPreferenceCompat
+        android:key="animal_chicken"
+        android:title="Chicken"
+        android:defaultValue="true" />
+    
+    <SwitchPreferenceCompat
+        android:key="animal_sheep"
+        android:title="Sheep"
+        android:defaultValue="true" />
+    
+    <SwitchPreferenceCompat
+        android:key="animal_cow"
+        android:title="Cow"
+        android:defaultValue="true" />
+
+</PreferenceScreen>

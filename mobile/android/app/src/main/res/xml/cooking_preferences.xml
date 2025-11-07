@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Grouping Options -->
+    <PreferenceCategory android:title="Grouping">
+        <SwitchPreferenceCompat
+            android:key="cooking_group_by_building"
+            android:title="Group By Building"
+            android:summary="Group all cooking items by building. Notification fires when all items finish."
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <!-- Fire Pit Section -->
+    <PreferenceCategory android:title="Fire Pit">
+        <SwitchPreferenceCompat
+            android:key="cooking_antipasto"
+            android:title="Antipasto"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_boiled_eggs"
+            android:title="Boiled Eggs"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_bumpkin_broth"
+            android:title="Bumpkin Broth"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_cabbers_n_mash"
+            android:title="Cabbers n Mash"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fried_tofu"
+            android:title="Fried Tofu"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_gumbo"
+            android:title="Gumbo"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_kale_omelette"
+            android:title="Kale Omelette"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_kale_stew"
+            android:title="Kale Stew"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_mashed_potato"
+            android:title="Mashed Potato"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_mushroom_soup"
+            android:title="Mushroom Soup"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_pizza_margherita"
+            android:title="Pizza Margherita"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_popcorn"
+            android:title="Popcorn"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_pumpkin_soup"
+            android:title="Pumpkin Soup"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_rapid_roast"
+            android:title="Rapid Roast"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_reindeer_carrot"
+            android:title="Reindeer Carrot"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_rice_bun"
+            android:title="Rice Bun"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <!-- Bakery Section -->
+    <PreferenceCategory android:title="Bakery">
+        <SwitchPreferenceCompat
+            android:key="cooking_apple_pie"
+            android:title="Apple Pie"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_beetroot_cake"
+            android:title="Beetroot Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_cabbage_cake"
+            android:title="Cabbage Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_carrot_cake"
+            android:title="Carrot Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_cauliflower_cake"
+            android:title="Cauliflower Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_cornbread"
+            android:title="Cornbread"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_eggplant_cake"
+            android:title="Eggplant Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_honey_cake"
+            android:title="Honey Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_kale_and_mushroom_pie"
+            android:title="Kale &amp; Mushroom Pie"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_lemon_cheesecake"
+            android:title="Lemon Cheesecake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_orange_cake"
+            android:title="Orange Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_parsnip_cake"
+            android:title="Parsnip Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_potato_cake"
+            android:title="Potato Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_pumpkin_cake"
+            android:title="Pumpkin Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_radish_cake"
+            android:title="Radish Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_sunflower_cake"
+            android:title="Sunflower Cake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_wheat_cake"
+            android:title="Wheat Cake"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <!-- Kitchen Section -->
+    <PreferenceCategory android:title="Kitchen">
+        <SwitchPreferenceCompat
+            android:key="cooking_caprese_salad"
+            android:title="Caprese Salad"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_cauliflower_burger"
+            android:title="Cauliflower Burger"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_chowder"
+            android:title="Chowder"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_club_sandwich"
+            android:title="Club Sandwich"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fish_burger"
+            android:title="Fish Burger"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fish_n_chips"
+            android:title="Fish n Chips"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fish_omelette"
+            android:title="Fish Omelette"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fried_calamari"
+            android:title="Fried Calamari"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fruit_salad"
+            android:title="Fruit Salad"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_goblin_brunch"
+            android:title="Goblin Brunch"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_goblin_treat"
+            android:title="Goblin's Treat"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_mushroom_jacket_potatoes"
+            android:title="Mushroom Jacket Potatoes"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_ocean_olive"
+            android:title="Ocean's Olive"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_pancakes"
+            android:title="Pancakes"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_roast_veggies"
+            android:title="Roast Veggies"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_seafood_basket"
+            android:title="Seafood Basket"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_spaghetti_al_limone"
+            android:title="Spaghetti al Limone"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_steamed_red_rice"
+            android:title="Steamed Red Rice"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_sushi_roll"
+            android:title="Sushi Roll"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_sunflower_crunch"
+            android:title="Sunflower Crunch"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_tofu_scramble"
+            android:title="Tofu Scramble"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_bumpkin_ganoush"
+            android:title="Bumpkin Ganoush"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_bumpkin_roast"
+            android:title="Bumpkin Roast"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_bumpkin_salad"
+            android:title="Bumpkin Salad"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <!-- Deli Section -->
+    <PreferenceCategory android:title="Deli">
+        <SwitchPreferenceCompat
+            android:key="cooking_blueberry_jam"
+            android:title="Blueberry Jam"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_blue_cheese"
+            android:title="Blue Cheese"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_cheese"
+            android:title="Cheese"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fancy_fries"
+            android:title="Fancy Fries"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fermented_carrots"
+            android:title="Fermented Carrots"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_fermented_fish"
+            android:title="Fermented Fish"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_honey_cheddar"
+            android:title="Honey Cheddar"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_sauerkraut"
+            android:title="Sauerkraut"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_shroom_syrup"
+            android:title="Shroom Syrup"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <!-- Smoothie Shack Section -->
+    <PreferenceCategory android:title="Smoothie Shack">
+        <SwitchPreferenceCompat
+            android:key="cooking_apple_juice"
+            android:title="Apple Juice"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_banana_blast"
+            android:title="Banana Blast"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_bumpkin_detox"
+            android:title="Bumpkin Detox"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_carrot_juice"
+            android:title="Carrot Juice"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_grape_juice"
+            android:title="Grape Juice"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_orange_juice"
+            android:title="Orange Juice"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_power_smoothie"
+            android:title="Power Smoothie"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_purple_smoothie"
+            android:title="Purple Smoothie"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_quick_juice"
+            android:title="Quick Juice"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_slow_juice"
+            android:title="Slow Juice"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_sour_shake"
+            android:title="Sour Shake"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="cooking_the_lot"
+            android:title="The Lot"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

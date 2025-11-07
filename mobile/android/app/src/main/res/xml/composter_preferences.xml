@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat
+        android:key="composter_composter"
+        android:title="Composter"
+        android:defaultValue="true" />
+    
+    <SwitchPreferenceCompat
+        android:key="composter_turbo_composter"
+        android:title="Turbo Composter"
+        android:defaultValue="true" />
+    
+    <SwitchPreferenceCompat
+        android:key="composter_premium_composter"
+        android:title="Premium Composter"
+        android:defaultValue="true" />
+
+</PreferenceScreen>

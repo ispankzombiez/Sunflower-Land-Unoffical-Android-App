@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat android:key="greenhouse_crop_rice" android:title="Rice" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="greenhouse_crop_olive" android:title="Olive" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="greenhouse_crop_grape" android:title="Grape" android:defaultValue="true" />
+</PreferenceScreen>

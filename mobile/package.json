@@ -1,0 +1,25 @@
+{
+  "name": "sunflower-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "parcel src/index.html --open",
+    "build": "parcel build src/index.html --dist-dir ../www --public-url ./",
+    "clean": "rimraf ../www/*"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "@capacitor/local-notifications": "^6.1.0",
+    "@walletconnect/sign-client": "^2.6.1",
+    "@walletconnect/web3wallet": "^1.9.3",
+    "ethers": "^6.8.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.0",
+    "buffer": "^6.0.3",
+    "parcel": "^2.9.3",
+    "process": "^0.11.10",
+    "rimraf": "^5.0.0"
+  }
+}

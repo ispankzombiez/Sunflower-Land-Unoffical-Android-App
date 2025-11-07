@@ -1,0 +1,18 @@
+# Build and cache directories
+.parcel-cache/
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Capacitor
+android/app/build/
+ios/App/build/
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/

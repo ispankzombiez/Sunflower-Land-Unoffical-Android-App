@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunflower Land Mobile</title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      #gameFrame {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 100;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+      }
+      .overlay.active {
+        display: flex;
+      }
+      button {
+        font-size: 16px;
+        padding: 12px 24px;
+        margin: 8px;
+        border: none;
+        border-radius: 4px;
+        background: #4CAF50;
+        color: white;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe id="gameFrame" src="https://play.sunflower-land.com" allow="clipboard-write"></iframe>
+    <script>
+      // Debug logging
+      window.onerror = function(msg, url, line) {
+        console.error(`Global error: ${msg} at ${url}:${line}`);
+        return false;
+      };
+
+      // Monitor iframe load
+      document.getElementById('gameFrame').onload = function() {
+        console.log('Game iframe loaded');
+      };
+      document.getElementById('gameFrame').onerror = function(error) {
+        console.error('Game iframe failed to load:', error);
+      };
+    </script>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>

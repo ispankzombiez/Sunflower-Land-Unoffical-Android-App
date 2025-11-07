@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat android:key="flower_red_pansy" android:title="Red Pansy" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_pansy" android:title="Yellow Pansy" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_pansy" android:title="Purple Pansy" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_pansy" android:title="White Pansy" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_pansy" android:title="Blue Pansy" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_cosmos" android:title="Red Cosmos" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_cosmos" android:title="Yellow Cosmos" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_cosmos" android:title="Purple Cosmos" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_cosmos" android:title="White Cosmos" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_cosmos" android:title="Blue Cosmos" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_prism_petal" android:title="Prism Petal" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_balloon_flower" android:title="Red Balloon Flower" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_balloon_flower" android:title="Yellow Balloon Flower" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_balloon_flower" android:title="Purple Balloon Flower" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_balloon_flower" android:title="White Balloon Flower" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_balloon_flower" android:title="Blue Balloon Flower" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_daffodil" android:title="Red Daffodil" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_daffodil" android:title="Yellow Daffodil" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_daffodil" android:title="Purple Daffodil" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_daffodil" android:title="White Daffodil" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_daffodil" android:title="Blue Daffodil" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_celestial_frostbloom" android:title="Celestial Frostbloom" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_edelweiss" android:title="Red Edelweiss" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_edelweiss" android:title="Yellow Edelweiss" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_edelweiss" android:title="Purple Edelweiss" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_edelweiss" android:title="White Edelweiss" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_edelweiss" android:title="Blue Edelweiss" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_gladiolus" android:title="Red Gladiolus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_gladiolus" android:title="Yellow Gladiolus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_gladiolus" android:title="Purple Gladiolus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_gladiolus" android:title="White Gladiolus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_gladiolus" android:title="Blue Gladiolus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_lavender" android:title="Red Lavender" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_lavender" android:title="Yellow Lavender" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_lavender" android:title="Purple Lavender" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_lavender" android:title="White Lavender" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_lavender" android:title="Blue Lavender" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_carnation" android:title="Red Carnation" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_carnation" android:title="Yellow Carnation" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_carnation" android:title="Purple Carnation" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_carnation" android:title="White Carnation" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_carnation" android:title="Blue Carnation" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_clover" android:title="Red Clover" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_clover" android:title="Yellow Clover" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_clover" android:title="Purple Clover" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_clover" android:title="White Clover" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_clover" android:title="Blue Clover" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_red_lotus" android:title="Red Lotus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_yellow_lotus" android:title="Yellow Lotus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_purple_lotus" android:title="Purple Lotus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_white_lotus" android:title="White Lotus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_blue_lotus" android:title="Blue Lotus" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="flower_primula_enigma" android:title="Primula Enigma" android:defaultValue="true" />
+</PreferenceScreen>

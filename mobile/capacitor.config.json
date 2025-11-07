@@ -1,0 +1,9 @@
+{
+  "appId": "com.sunflowerland.mobile",
+  "appName": "Sunflower-Land-Mobile",
+  "server": {
+    "url": "https://sunflower-land.com/play/?ref=iSPANK",
+    "cleartext": true
+  },
+  "bundledWebRuntime": false
+}

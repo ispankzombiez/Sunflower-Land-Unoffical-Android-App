@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat android:key="crafting_doll" android:title="Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_angler_doll" android:title="Angler Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_bigfin_doll" android:title="Bigfin Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_bloom_doll" android:title="Bloom Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_buzz_doll" android:title="Buzz Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_cluck_doll" android:title="Cluck Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_cosmo_doll" android:title="Cosmo Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_crude_doll" android:title="Crude Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_dune_doll" android:title="Dune Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_ember_doll" android:title="Ember Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_frosty_doll" android:title="Frosty Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_gilded_doll" android:title="Gilded Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_grubby_doll" android:title="Grubby Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_harvest_doll" android:title="Harvest Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_juicy_doll" android:title="Juicy Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_lumber_doll" android:title="Lumber Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_lunar_doll" android:title="Lunar Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_moo_doll" android:title="Moo Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_mouse_doll" android:title="Mouse Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_nefari_doll" android:title="Nefari Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_shadow_doll" android:title="Shadow Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_sizzle_doll" android:title="Sizzle Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_solar_doll" android:title="Solar Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_wolly_doll" android:title="Wolly Doll" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_fisher_bed" android:title="Fisher Bed" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_basic_bed" android:title="Basic Bed" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_floral_bed" android:title="Floral Bed" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_desert_bed" android:title="Desert Bed" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_sturdy_bed" android:title="Sturdy Bed" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_cow_bed" android:title="Cow Bed" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_pirate_bed" android:title="Pirate Bed" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crafting_royal_bed" android:title="Royal Bed" android:defaultValue="true" />
+</PreferenceScreen>

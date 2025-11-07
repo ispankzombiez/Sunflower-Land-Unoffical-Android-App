@@ -1,0 +1,66 @@
+# Build artifacts and cache directories
+build/
+.parcel-cache/
+dist/
+
+# Node modules
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+log_output.txt
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary folders
+tmp/
+temp/
+
+# Android specific
+*.apk
+*.aab
+*.ap_
+*.dex
+local.properties
+
+# Gradle
+.gradle/
+
+# Sensitive Android files and keys
+*.keystore
+*.jks
+*.p12
+keystore/
+# Keep template but ignore actual signing config
+signing.properties
+
+# API data and temporary files
+apiexample
+autosave_*.json
+farm_data.json
+auction_schedule_raw.json
+*.dump
+logdump.txt
+old_periodic_check.txt
+
+# PowerShell scripts (may contain sensitive operations)
+*.ps1
+
+# Generated/downloaded assets
+game-assets-download/

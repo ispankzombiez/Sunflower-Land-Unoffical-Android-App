@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <!-- Manager Section -->
+    <PreferenceCategory android:title="Manager">
+        <Preference
+            android:key="Start_Notification_Manager"
+            android:title="Start Notification Worker"
+            android:summary="Start the background notification worker" />
+        <Preference
+            android:key="Stop_Notification_Manager"
+            android:title="Stop Notification Worker"
+            android:summary="Stop the background notification worker" />
+        <SwitchPreferenceCompat
+            android:key="autostart_manager"
+            android:title="Auto Start Worker"
+            android:summary="Auto starts the notification worker if it was not running when the Sunflower Land main activity opens"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="only_notifications"
+            android:title="Only Notifications"
+            android:summary="Disables the web-browsing feature of this app, leaving only the notification worker"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <!-- General Settings (without master toggle) -->
+    <PreferenceCategory android:title="General">
+        <EditTextPreference
+            android:key="farm_id"
+            android:title="Farm ID"
+            android:summary="Enter your Sunflower Land Farm ID"
+            android:inputType="number"
+            android:defaultValue="" />
+
+        <!-- API Key input -->
+        <EditTextPreference
+            android:key="api_key"
+            android:title="API Key"
+            android:summary="Enter your Sunflower Land API Key"
+            android:inputType="textPassword"
+            android:defaultValue="" />
+
+        <!-- Refresh Time input -->
+        <EditTextPreference
+            android:key="refresh_time"
+            android:title="Refresh Time (seconds)"
+            android:summary="How often to check the farm API (in seconds)"
+            android:inputType="number"
+            android:defaultValue="300" />
+    </PreferenceCategory>
+
+    <!-- Category Toggles -->
+    <PreferenceCategory android:title="Notification Categories">
+
+        <Preference
+            android:key="notifications_master_on"
+            android:title="Turn On All Notifications"
+            android:summary="Turn on all farm notification categories at once" />
+
+        <Preference
+            android:key="notifications_master"
+            android:title="Turn Off All Notifications"
+            android:summary="Turn off all farm notification categories at once" />
+
+        <SwitchPreferenceCompat
+            android:key="category_daily_reset"
+            android:title="Daily Reset"
+            android:summary="Get notified every day at 00:00 UTC"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="marketplace_listings_enabled"
+            android:title="Marketplace Listings"
+            android:summary="Get notified when your marketplace listings are sold"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="floating_island_enabled"
+            android:title="Floating/Love Island"
+            android:summary="Get notified about floating island availability and shop changes"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="category_auction"
+            android:title="Auctions"
+            android:summary="Get notified when auction items are live"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="category_pet_sleep"
+            android:title="Pet Sleep"
+            android:summary="Get notified when your pets are sleeping"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="category_crafting"
+            android:title="Crafting Box"
+            android:summary="Get notified when crafting box items are ready"
+            android:defaultValue="true" />
+
+        <SwitchPreferenceCompat
+            android:key="category_crop_machine"
+            android:title="Crop Machine"
+            android:summary="Get notified when crop machine items are ready"
+            android:defaultValue="true" />
+
+        <Preference
+            android:key="category_crops"
+            android:title="Crops"
+            android:summary="Tap to customize individual crops"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+        <Preference
+            android:key="category_fruits"
+            android:title="Fruits"
+            android:summary="Tap to customize individual fruits"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+        <Preference
+            android:key="category_greenhouse_crops"
+            android:title="Greenhouse Crops"
+            android:summary="Tap to customize greenhouse crops"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+        <Preference
+            android:key="category_resources"
+            android:title="Resources"
+            android:summary="Tap to customize resource types"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+        <Preference
+            android:key="category_cooking"
+            android:title="Cooking"
+            android:summary="Tap to customize individual recipes"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+        <Preference
+            android:key="category_animals"
+            android:title="Animals"
+            android:summary="Tap to customize animal types"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+        <Preference
+            android:key="category_flowers"
+            android:title="Flowers"
+            android:summary="Tap to customize individual flowers"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+        <Preference
+            android:key="category_composters"
+            android:title="Composters"
+            android:summary="Tap to customize composter types"
+            android:icon="@android:drawable/ic_menu_view" />
+        
+    </PreferenceCategory>
+
+    <!-- Debug/Dev Section -->
+    <PreferenceCategory android:title="Debug/Dev">
+        <Preference
+            android:key="view_raw_json"
+            android:title="View Raw JSON"
+            android:summary="Open and view the raw farm_api_raw.json file from the last API response" />
+        <Preference
+            android:key="view_processed_json"
+            android:title="View Processed JSON"
+            android:summary="Open and view the processed future_notifications.json file (all future notifications)" />
+        <Preference
+            android:key="view_notification_log"
+            android:title="View Notification Log"
+            android:summary="Open and view the notification_summary.log file for debugging" />
+        <Preference
+            android:key="view_processing_log"
+            android:title="Processing Log"
+            android:summary="View the contents of the sunflower_log.txt file (debug processing log)" />
+    </PreferenceCategory>
+
+    <!-- About Section -->
+    <PreferenceCategory android:title="About">
+        <Preference
+            android:key="info_button"
+            android:title="Info"
+            android:summary="Info about the developer" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

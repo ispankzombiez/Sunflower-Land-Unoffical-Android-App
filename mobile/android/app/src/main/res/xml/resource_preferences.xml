@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat android:key="resource_tree" android:title="Tree" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="resource_stone" android:title="Stone" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="resource_iron" android:title="Iron" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="resource_gold" android:title="Gold" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="resource_crimstone" android:title="Crimstone" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="resource_oil" android:title="Oil" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="resource_sunstone" android:title="Sunstone" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="resource_obsidian" android:title="Obsidian" android:defaultValue="true" />
+</PreferenceScreen>

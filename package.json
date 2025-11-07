@@ -1,0 +1,23 @@
+{
+  "name": "sunflower-land-browser",
+  "version": "1.0.0",
+  "description": "A webview app with WalletConnect and multi-wallet support",
+  "scripts": {},
+  "keywords": [
+    "webview",
+    "walletconnect",
+    "web3",
+    "android",
+    "mobile"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "@walletconnect/ethereum-provider": "^2.4.0",
+    "@walletconnect/sign-client": "^2.4.0",
+    "@web3modal/standalone": "^2.0.0",
+    "web3": "^4.2.0",
+    "ethers": "^6.8.0"
+  }
+}

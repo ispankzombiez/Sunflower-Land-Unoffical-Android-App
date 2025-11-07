@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:hardwareAccelerated="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".NotificationLogActivity"
+            android:label="Notification Log"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".DebugLogActivity"
+            android:label="General Debug Log"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <service
+            android:name=".NotificationManagerService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":notifications" />
+
+        <receiver
+            android:name=".NotificationReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sunflowerland.mobile.FARM_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:launchMode="singleTask"
+            android:hardwareAccelerated="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.GAME" />
+            </intent-filter>
+            
+            <!-- Comprehensive wallet scheme handler for deep link routing -->
+            <!-- This app acts as the primary handler for all wallet-related URI schemes.
+                 We intercept them here and route them to the appropriate wallet app installed on the device.
+                 This gives us centralized control over wallet routing for WalletConnect and other integrations. -->
+            
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- WalletConnect and Common Wallet Schemes -->
+                <data android:scheme="wc" />
+                <data android:scheme="metamask" />
+                <data android:scheme="roninwallet" />
+                <data android:scheme="bnc" />
+                <data android:scheme="bncus" />
+                <data android:scheme="binance" />
+                <data android:scheme="trust" />
+                <data android:scheme="trustwallet" />
+                <data android:scheme="coinbase" />
+                <data android:scheme="rainbow" />
+                <data android:scheme="argent" />
+                <data android:scheme="wallet" />
+                <data android:scheme="walletconnect" />
+                <data android:scheme="dydx" />
+                <data android:scheme="uniswap" />
+                <data android:scheme="ledger" />
+                <data android:scheme="ledgerlive" />
+                <data android:scheme="zerion" />
+                <data android:scheme="crypto" />
+                <data android:scheme="phantom" />
+                <data android:scheme="solflare" />
+                <data android:scheme="okx" />
+                <data android:scheme="okex" />
+                <data android:scheme="keplr" />
+                <data android:scheme="sunflowerland" />
+                <data android:scheme="exodus" />
+                <data android:scheme="rabby" />
+                <data android:scheme="debank" />
+                <!-- Additional wallets from list -->
+                <data android:scheme="1inch" />
+                <data android:scheme="bitpay" />
+                <data android:scheme="bestwallet" />
+                <data android:scheme="fireblocks" />
+                <data android:scheme="bitget" />
+                <data android:scheme="tokenpocket" />
+                <data android:scheme="safepal" />
+                <data android:scheme="xportal" />
+                <data android:scheme="bitcoincom" />
+                <data android:scheme="bitcoin" />
+                <data android:scheme="bitfrost" />
+                <data android:scheme="rakuten" />
+                <data android:scheme="bybit" />
+                <data android:scheme="blockchaincom" />
+                <data android:scheme="blockchain" />
+                <data android:scheme="trezor" />
+                <data android:scheme="imtoken" />
+                <data android:scheme="safe" />
+                <data android:scheme="gemini" />
+                <data android:scheme="ctrl" />
+                <data android:scheme="arculus" />
+            </intent-filter>
+
+        </activity>
+
+        <!-- Settings Activity - appears in Android Settings > Apps > Sunflower Land -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Notification settings"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
+            </intent-filter>
+        </activity>
+
+        <!-- Category Settings Activities -->
+        <activity
+            android:name=".CropSettingsActivity"
+            android:label="Crop Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+        
+        <activity
+            android:name=".FruitSettingsActivity"
+            android:label="Fruit Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+        
+        <activity
+            android:name=".GreenhouseSettingsActivity"
+            android:label="Greenhouse Crop Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+        
+        <activity
+            android:name=".FlowerSettingsActivity"
+            android:label="Flower Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+        
+        <activity
+            android:name=".CookingSettingsActivity"
+            android:label="Cooking Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+        
+        <activity
+            android:name=".ComposterSettingsActivity"
+            android:label="Composter Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+        
+        <activity
+            android:name=".AnimalSettingsActivity"
+            android:label="Animal Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+        
+        <activity
+            android:name=".ResourceSettingsActivity"
+            android:label="Resource Notifications"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".SettingsActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
+        <activity
+            android:name=".RawJsonActivity"
+            android:label="Raw JSON"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".ProcessedJsonActivity"
+            android:label="Processed JSON"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".InfoActivity"
+            android:label="Info"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+    </application>
+
+    <!-- Permissions -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <!-- Foreground service permissions removed because service no longer runs as a persistent foreground task -->
+    <!-- Permissions for accessing notification sounds from device storage (Android 13+) -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <!-- Fallback for older Android versions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+</manifest>

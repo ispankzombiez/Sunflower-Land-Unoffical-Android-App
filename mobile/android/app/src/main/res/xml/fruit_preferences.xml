@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat android:key="fruit_tomato" android:title="Tomato" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_lemon" android:title="Lemon" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_blueberry" android:title="Blueberry" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_orange" android:title="Orange" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_apple" android:title="Apple" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_banana" android:title="Banana" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_celestine" android:title="Celestine" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_lunara" android:title="Lunara" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="fruit_duskberry" android:title="Duskberry" android:defaultValue="true" />
+</PreferenceScreen>

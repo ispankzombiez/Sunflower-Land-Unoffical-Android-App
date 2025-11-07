@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <SwitchPreferenceCompat android:key="crop_sunflower" android:title="Sunflower" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_potato" android:title="Potato" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_rhubarb" android:title="Rhubarb" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_pumpkin" android:title="Pumpkin" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_zucchini" android:title="Zucchini" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_carrot" android:title="Carrot" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_yam" android:title="Yam" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_cabbage" android:title="Cabbage" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_broccoli" android:title="Broccoli" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_soybean" android:title="Soybean" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_beetroot" android:title="Beetroot" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_pepper" android:title="Pepper" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_cauliflower" android:title="Cauliflower" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_parsnip" android:title="Parsnip" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_eggplant" android:title="Eggplant" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_corn" android:title="Corn" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_onion" android:title="Onion" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_radish" android:title="Radish" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_wheat" android:title="Wheat" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_turnip" android:title="Turnip" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_kale" android:title="Kale" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_artichoke" android:title="Artichoke" android:defaultValue="true" />
+    <SwitchPreferenceCompat android:key="crop_barley" android:title="Barley" android:defaultValue="true" />
+</PreferenceScreen>

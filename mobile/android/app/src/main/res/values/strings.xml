@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Sunflower Land</string>
+    <string name="title_activity_main">Sunflower Land</string>
+    <string name="package_name">com.sunflowerland.mobile</string>
+    <string name="custom_url_scheme">com.sunflowerland.mobile</string>
+</resources>
