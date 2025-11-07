@@ -22,7 +22,7 @@
             android:defaultValue="true" />
         <SwitchPreferenceCompat
             android:key="only_notifications"
-            android:title="Disable WebView (Notifications Only)"
+            android:title="Notifications Only"
             android:summary="When enabled, app opens to Settings instead of the game. Disables web browsing and keeps only the notification system."
             android:defaultValue="false" />
         <Preference
