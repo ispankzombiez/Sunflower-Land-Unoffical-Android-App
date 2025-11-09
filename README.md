@@ -1,6 +1,6 @@
 # Sunflower Land Unofficial Android App
 
-An unofficial Android mobile app for [Sunflower Land](https://sunflower-land.com/) built with Capacitor and WalletConnect. This app provides a mobile-optimized WebView experience with integrated Web3 wallet connectivity.
+An unofficial Android mobile app for [Sunflower Land](https://sunflower-land.com/) built with Capacitor and WalletConnect. This app provides a mobile-optimized WebView experience with integrated Web3 wallet connectivity and native Android push-notifications.
 
 ## 🚀 Features
 
