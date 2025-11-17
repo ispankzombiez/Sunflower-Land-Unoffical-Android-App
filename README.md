@@ -164,6 +164,6 @@ If you encounter any issues:
 
 ## 🙏 Acknowledgments
 
-- [Sunflower Land](https://sunflower-land.com/) - The amazing game this app is built for
+- [Sunflower Land](https://sunflower-land.com/play/?ref=iSPANK) - The amazing game this app is built for
 - [Capacitor](https://capacitorjs.com/) - Cross-platform native runtime
 - [WalletConnect](https://walletconnect.com/) - Web3 wallet connectivity protocol
