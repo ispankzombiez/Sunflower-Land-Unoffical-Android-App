@@ -34,6 +34,8 @@ import android.view.View;
 import android.os.Build;
 import android.view.WindowManager;
 import androidx.core.view.WindowCompat;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 
 public class MainActivity extends BridgeActivity {
 
@@ -101,6 +103,11 @@ public class MainActivity extends BridgeActivity {
     private WebView mainWebView = null;
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 100;
     private static final int AUDIO_PERMISSION_REQUEST_CODE = 101;
+    
+    private GestureDetector gestureDetector;
+    private int threeFingerTapCount = 0;
+    private long lastThreeFingerTapTime = 0;
+    private static final int TRIPLE_TAP_TIMEOUT_MS = 1000;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -197,6 +204,13 @@ public class MainActivity extends BridgeActivity {
                 }
             }
         });
+        
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+        });
     }
     
     private void setupJavaScriptInterface() {
@@ -249,7 +263,34 @@ public class MainActivity extends BridgeActivity {
             if (wv != null) {
                 // Store WebView reference for back button functionality
                 this.mainWebView = wv;
-                
+
+                // Attach gesture detection to WebView
+                wv.setOnTouchListener(new View.OnTouchListener() {
+                    private int threeFingerTapCount = 0;
+                    private long lastThreeFingerTapTime = 0;
+                    private static final int TRIPLE_TAP_TIMEOUT_MS = 1000;
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getActionMasked() == MotionEvent.ACTION_DOWN || event.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN) {
+                            if (event.getPointerCount() == 3) {
+                                long now = System.currentTimeMillis();
+                                if (now - lastThreeFingerTapTime > TRIPLE_TAP_TIMEOUT_MS) {
+                                    threeFingerTapCount = 0;
+                                }
+                                threeFingerTapCount++;
+                                lastThreeFingerTapTime = now;
+                                if (threeFingerTapCount == 3) {
+                                    // Detected triple tap with three fingers
+                                    openSettingsPage();
+                                    threeFingerTapCount = 0;
+                                }
+                            }
+                        }
+                        return false; // Let WebView handle the rest
+                    }
+                });
+
                 getWindow().setFlags(
                     android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                     android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
@@ -1666,5 +1707,10 @@ public class MainActivity extends BridgeActivity {
         }
 
         return "";
+    }
+
+    private void openSettingsPage() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
