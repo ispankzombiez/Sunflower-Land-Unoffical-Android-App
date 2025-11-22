@@ -1,4 +1,4 @@
-      - name: Update 'latest' GitHub Release with newest APK
+      - name: build release APK
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
@@ -94,9 +94,38 @@ jobs:
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
 
 
+
       - name: Rename APK with version
         run: |
           mv mobile/android/app/build/outputs/apk/release/app-release.apk mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+
+      - name: Create versioned GitHub Release and Upload APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version_name }}
+          name: Sunflower Land Unofficial v${{ steps.version.outputs.version_name }}
+          body: Automated release of version ${{ steps.version.outputs.version_name }} APK.
+          draft: false
+          prerelease: false
+          files: mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update 'latest' GitHub Release with newest APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Sunflower Land Unofficial (Latest)
+          body: |
+            This is the latest release. For version history, see previous releases.
+            
+            Version: ${{ steps.version.outputs.version_name }}
+          draft: false
+          prerelease: false
+          files: mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+          overwrite_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release and Upload APK
         uses: softprops/action-gh-release@v2
