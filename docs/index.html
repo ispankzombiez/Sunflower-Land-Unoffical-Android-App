@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unofficial Sunflower Land Android App</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #181a20; color: #e6e6e6; }
+    header { background: #23242a; padding: 2rem 1rem 1rem 1rem; text-align: center; border-bottom: 2px solid #bfa14a; }
+    h1 { margin: 0; font-size: 2.5rem; color: #e6e6e6; }
+    .subtitle { font-size: 1.2rem; color: #bfa14a; margin-bottom: 1rem; }
+    main {
+      max-width: 1200px;
+      width: 95vw;
+      margin: 2rem auto;
+      background: #23242a;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0003;
+      padding: 2.5rem 3rem;
+    }
+    section { margin-bottom: 2rem; }
+    section.about p {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: 1.2em;
+    }
+    h2 { color: #c9b26d; margin-top: 0; }
+    ul { padding-left: 1.2em; }
+    .disclaimer { color: #e6c97a; font-size: 0.95em; background: #2c2d33; border-left: 4px solid #bfa14a; padding: 1em; border-radius: 6px; }
+    footer { text-align: center; color: #bfa14a; font-size: 0.9em; margin: 2rem 0 1rem 0; }
+    a { color: #c9b26d; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Unofficial Sunflower-Land Android App</h1>
+    <div class="subtitle">An open-source, community-built Android App for Sunflower Land</div>
+  </header>
+  <main>
+    <section class="about">
+      <h2>About</h2>
+      <p>
+        <strong>The Unofficial Android App</strong> is open-source Android client for the blockchain based farming game <a href="https://sunflower-land.com/play/?ref=iSPANK" target="_blank">Sunflower Land</a>.
+        Enjoy a native mobile experience, real-time notifications, and more—right from your phone!
+      </p>
+    </section>
+    <section>
+      <h2>Features</h2>
+      <ul>
+        <li>Full Sunflower Land gameplay</li>
+        <li>Background notifications for almost all categories (Some categories are WIP)</li>
+        <li>Built in Android Game Acceleration</li>
+        <li>Modern, responsive Android UI</li>
+        <li>Customizable settings and logs</li>
+        <li>Completely open-source and community maintained</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Testing Access & Beta Info</h2>
+      <p>
+        <strong>If you were on the previous beta list, you have been given access to the most recent version.</strong>
+      </p>
+      <h3>Want to join the beta?</h3>
+      <p>
+        <a href="https://forms.gle/HJaEFrbHpr9Qy4Hj6" target="_blank">Fill out this form</a> and you’ll be notified when access is granted.
+      </p>
+    </section>
+
+    <section id="google-play">
+      <h2>Google Play</h2>
+      <p>
+        <a href="https://play.google.com/store/apps/details?id=com.sunflowerland.mobile" target="_blank">
+          https://play.google.com/store/apps/details?id=com.sunflowerland.mobile
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2>GitHub</h2>
+      <p>
+        <a href="https://github.com/ispankzombiez/Sunflower-Land-Unoffical-Android-App" target="_blank">
+          https://github.com/ispankzombiez/Sunflower-Land-Unoffical-Android-App
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2>A Note For Testers</h2>
+      <ul>
+        <li>The app can operate without the native browser activity. You can disable this in settings by turning on the <b>“notifications only”</b> toggle.</li>
+        <li>Clicking any notification (not the drop down arrow) will automatically open the app. But this can also be customized to open any app you desire.</li>
+        <li>To view settings:
+          <ol type="1" style="margin:0 0 0 2.2em; padding:0 0 0 0.8em;">
+            <li>While the game is open, triple tap with 3 fingers</li>
+            <li>Long press the app → App info → “Configure in Sunflower Land” or “Settings in Sunflower Land” (label may vary by phone)</li>
+          </ol>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>How to Enable Push Notifications</h2>
+      <ol>
+        <li>Insert your Farm ID into app settings (find it in-game: Settings → 3 dots → top of the game options panel → click to copy).</li>
+        <li>Insert your Farm API key into app settings (find it in-game: Settings → 3 dots → General → API Key → Copy).</li>
+        <li>Click the <b>“Start Worker”</b> button in settings, or simply open the app if you use the web-browsing feature (auto-start can be disabled in settings).</li>
+      </ol>
+    </section>
+    <section>
+      <h2>How to Install</h2>
+      <ol>
+        <li>Download from <a href="#google-play">The Google Play Store link above</a>.</li>
+        
+      </ol>
+      <h3>For advanced users</h3>
+      <p>
+        You can build the app from source using Android Studio or the provided Gradle scripts.
+      </p>
+      <ol>
+        <li>Clone or download this repository to your computer.</li>
+        <li>Install the <a href="https://developer.android.com/tools/releases/platform-tools" target="_blank">Android SDK Platform Tools</a> (Android Studio is optional, but you must have the SDK and platform tools to build and install to Android devices).</li>
+        <li>Open a terminal in the project root directory.</li>
+        <li>Navigate to the <code>mobile/android</code> folder.</li>
+        <li>Enable "Install from Unknown Sources" on your Android device if installing manually (usually in Settings &gt; Security).</li>
+        <li>Connect your Android device via USB and ensure USB debugging is enabled (see <a href="https://developer.android.com/studio/debug/dev-options" target="_blank">how to enable USB debugging</a>).</li>
+        <li>Run <code>.\gradlew.bat installdebug</code> (Windows) or <code>./gradlew installDebug</code> (Linux/macOS) to build and install the debug APK directly to your connected device.</li>
+        <li>If you prefer, you can still find the APK in <code>app/build/outputs/apk/debug/app-debug.apk</code> and install it manually.</li>
+      </ol>
+      <p>For more details or troubleshooting, see the README or open an issue on GitHub.</p>
+    </section>
+    <section>
+      <h2>Safety</h2>
+      <ul>
+        <li><strong>Never share your wallet recovery phrase</strong> (seed phrase) with anyone. No legitimate app or developer will ever ask for it.</li>
+        <li>Be cautious of websites or apps impersonating this project or Sunflower Land. Always verify URLs and sources before entering sensitive information.</li>
+        <li>Only install the app from trusted sources, such as the official Google Play Store or this project's GitHub releases. Avoid downloading APKs or content from unknown or suspicious sites.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Disclaimer</h2>
+      <div class="disclaimer">
+        This is an <u><strong>unofficial</strong></u> app and is not affiliated with, endorsed by, or connected to Sunflower Land or its developers. This project is entirely created and maintained by independent community members and fans of the game.
+        <br><br>
+        We strive to ensure this app is safe and trustworthy. The source code is fully open-source and available for public review on GitHub. No private keys, wallet recovery phrases, or sensitive information are ever requested or stored by this app.
+        <br><br>
+        Please always exercise caution and follow best security practices when using any third-party software. Use at your own risk.
+      </div>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 Sunflower Land Unofficial Android App Community
+  </footer>
+</body>
+</html>
