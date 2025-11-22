@@ -1,3 +1,18 @@
+      - name: Update 'latest' GitHub Release with newest APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Sunflower Land Unofficial (Latest)
+          body: |
+            This is the latest release. For version history, see previous releases.
+            
+            Version: ${{ steps.version.outputs.version_name }}
+          draft: false
+          prerelease: false
+          files: mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+          overwrite_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 name: Android Release Build
 permissions:
