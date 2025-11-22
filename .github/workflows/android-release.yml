@@ -80,6 +80,10 @@ jobs:
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
 
 
+      - name: Rename APK with version
+        run: |
+          mv mobile/android/app/build/outputs/apk/release/app-release.apk mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+
       - name: Create GitHub Release and Upload APK
         uses: softprops/action-gh-release@v2
         with:
@@ -88,7 +92,6 @@ jobs:
           body: Automated release of version ${{ steps.version.outputs.version_name }} APK.
           draft: false
           prerelease: false
-          files: mobile/android/app/build/outputs/apk/release/app-release.apk
-          asset_name: sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+          files: mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
