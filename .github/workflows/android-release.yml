@@ -5,8 +5,6 @@ permissions:
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
   build:
@@ -72,11 +70,7 @@ jobs:
           cd mobile/android
           ./gradlew assembleRelease
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-apk
-          path: mobile/android/app/build/outputs/apk/release/app-release.apk
+
 
       - name: Get version name from Gradle
         id: version
@@ -86,24 +80,15 @@ jobs:
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
 
 
-      - name: Create or Update GitHub Release
-        id: create_release
+      - name: Create GitHub Release and Upload APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: Latest Release
-          body: Automated release of the latest APK.
+          tag_name: v${{ steps.version.outputs.version_name }}
+          name: Sunflower Land Unofficial v${{ steps.version.outputs.version_name }}
+          body: Automated release of version ${{ steps.version.outputs.version_name }} APK.
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload APK to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: mobile/android/app/build/outputs/apk/release/app-release.apk
+          files: mobile/android/app/build/outputs/apk/release/app-release.apk
           asset_name: sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
-          asset_content_type: application/vnd.android.package-archive
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
