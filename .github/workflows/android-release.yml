@@ -30,10 +30,10 @@ jobs:
 
       - name: Create signing properties
         run: |
-          echo "storeFile=sunflower-land-unofficial.jks" > mobile/android/app/signing.properties
-          echo "storePassword=$KEYSTORE_PASSWORD" >> mobile/android/app/signing.properties
-          echo "keyAlias=$KEY_ALIAS" >> mobile/android/app/signing.properties
-          echo "keyPassword=$KEY_PASSWORD" >> mobile/android/app/signing.properties
+          echo "RELEASE_STORE_FILE=sunflower-land-unofficial.jks" > mobile/android/app/signing.properties
+          echo "RELEASE_STORE_PASSWORD=$KEYSTORE_PASSWORD" >> mobile/android/app/signing.properties
+          echo "RELEASE_KEY_ALIAS=$KEY_ALIAS" >> mobile/android/app/signing.properties
+          echo "RELEASE_KEY_PASSWORD=$KEY_PASSWORD" >> mobile/android/app/signing.properties
 
       - name: Grant execute permission to gradlew
         run: chmod +x mobile/android/gradlew
