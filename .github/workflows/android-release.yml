@@ -43,15 +43,21 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install npm dependencies
-        run: |
-          cd mobile
-          npm ci
+      # The following steps are not needed if www is committed
+      # - name: Install npm dependencies
+      #   run: |
+      #     cd mobile
+      #     npm ci
 
-      - name: Build web assets
+      # - name: Build web assets
+      #   run: |
+      #     cd mobile
+      #     npm run build
+
+      - name: Copy prebuilt web assets to mobile/www
         run: |
-          cd mobile
-          npm run build
+          rm -rf mobile/www
+          cp -r www mobile/www
 
       - name: Sync Capacitor
         run: |
