@@ -43,16 +43,20 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install npm dependencies and sync Capacitor
+      - name: Install npm dependencies
         run: |
           cd mobile
           npm ci
-          npx cap sync android
 
       - name: Build web assets
         run: |
           cd mobile
           npm run build
+
+      - name: Sync Capacitor
+        run: |
+          cd mobile
+          npx cap sync android
 
       - name: Build Release APK
         run: |
