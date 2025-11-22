@@ -49,6 +49,11 @@ jobs:
           npm ci
           npx cap sync android
 
+      - name: Build web assets
+        run: |
+          cd mobile
+          npm run build
+
       - name: Build Release APK
         run: |
           cd mobile/android
