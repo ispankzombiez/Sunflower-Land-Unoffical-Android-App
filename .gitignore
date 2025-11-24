@@ -1,3 +1,5 @@
+# Sensitive scripts
+fetch_sfl_api.ps1
 # Build artifacts and cache directories
 build/
 .parcel-cache/

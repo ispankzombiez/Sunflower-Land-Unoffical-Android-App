@@ -36,6 +36,29 @@
             android:title="Notifications Only"
             android:summary="When enabled, app opens to Settings instead of the game. Disables web browsing and keeps only the notification system."
             android:defaultValue="false" />
+        <SwitchPreferenceCompat
+            android:key="no_browser_controls"
+            android:title="No Browser Controls"
+            android:summary="Hide browser navigation controls (default: ON). When ON, only the game is shown. When OFF, browser controls are visible."
+            android:defaultValue="true" />
+        <EditTextPreference
+            android:key="home_page"
+            android:title="Home page"
+            android:summary="Set the default home page URL for the browser."
+            android:inputType="textUri"
+            android:defaultValue="https://sunflower-land.com/play/?ref=iSPANK" />
+        <EditTextPreference
+            android:key="home_page_2"
+            android:title="Home page 2"
+            android:summary="Set the default home page URL for tab 2."
+            android:inputType="textUri"
+            android:defaultValue="https://sfl.world" />
+        <EditTextPreference
+            android:key="home_page_3"
+            android:title="Home page 3"
+            android:summary="Set the default home page URL for tab 3."
+            android:inputType="textUri"
+            android:defaultValue="https://wiki.sfl.world" />
         <Preference
             android:key="app_to_open"
             android:title="App to Open"

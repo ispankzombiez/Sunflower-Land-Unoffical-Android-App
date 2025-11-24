@@ -31,18 +31,18 @@ import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 import android.Manifest;
 import android.view.View;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.graphics.Insets;
-import android.text.TextWatcher;
-import android.text.Editable;
 import android.os.Build;
 import android.view.WindowManager;
 import androidx.core.view.WindowCompat;
-import android.view.GestureDetector;
+// import android.view.GestureDetector; // Removed for build
 import android.view.MotionEvent;
 
 public class MainActivity extends BridgeActivity {
+    private android.widget.LinearLayout browserControlsBar;
+    private android.widget.ImageButton btnBack, btnForward, btnReload;
+    private android.widget.EditText urlBar;
+    private android.content.SharedPreferences prefs;
+    private android.content.SharedPreferences.OnSharedPreferenceChangeListener prefListener;
 
     /**
      * Applies the orientation setting from preferences or a given value.
@@ -104,126 +104,30 @@ public class MainActivity extends BridgeActivity {
             );
         }
     }
-
-    /**
-     * Show or hide the system navigation bar (soft keys) in an API-version-aware way.
-     * When hiding, the bars can be revealed transiently by swipe.
-     */
-    private void setSystemNavHidden(boolean hide) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                final android.view.WindowInsetsController insetsController = getWindow().getInsetsController();
-                if (insetsController != null) {
-                    if (hide) {
-                        // Hide both navigation and status bars when requested
-                        insetsController.hide(android.view.WindowInsets.Type.navigationBars() | android.view.WindowInsets.Type.statusBars());
-                        insetsController.setSystemBarsBehavior(android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
-                    } else {
-                        // Show both navigation and status bars again
-                        insetsController.show(android.view.WindowInsets.Type.navigationBars() | android.view.WindowInsets.Type.statusBars());
-                    }
-                }
-            } else {
-                final View decor = getWindow().getDecorView();
-                int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-                if (hide) {
-                    flags |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-                }
-                decor.setSystemUiVisibility(flags);
-            }
-
-        // Remember the current hidden state so the WindowInsets listener can honor it
-        try { systemNavHidden = hide; } catch (Exception ignored) { }
-        } catch (Exception e) {
-            Log.w("MainActivity", "Failed to set system navigation visibility", e);
-        }
-
-        // Re-apply insets so our WindowInsets listener recalculates WebView padding/margin
-        try {
-            View root = findViewById(getResources().getIdentifier("root_coordinator", "id", getPackageName()));
-            if (root != null) root.requestApplyInsets();
-        } catch (Exception ignored) { }
-
-        // Immediately adjust WebView padding/margin and root top padding for the hide case so UI updates without waiting
-        try {
-            uiHandler.post(() -> {
-                try {
-                    if (mainWebView != null) {
-                        if (hide) {
-                            // Remove bottom inset so WebView can extend to screen bottom
-                            mainWebView.setPadding(mainWebView.getPaddingLeft(), mainWebView.getPaddingTop(), mainWebView.getPaddingRight(), 0);
-                            try {
-                                android.view.ViewGroup.LayoutParams lp = mainWebView.getLayoutParams();
-                                if (lp instanceof android.widget.LinearLayout.LayoutParams) {
-                                    android.widget.LinearLayout.LayoutParams llp = (android.widget.LinearLayout.LayoutParams) lp;
-                                    if (llp.bottomMargin != 0) {
-                                        llp.bottomMargin = 0;
-                                        mainWebView.setLayoutParams(llp);
-                                    }
-                                }
-                            } catch (Exception ignore) { }
-                            // Also clear the root view top padding so the status bar hidden state
-                            // immediately allows content to occupy the top of the screen.
-                            try {
-                                View root = findViewById(getResources().getIdentifier("root_coordinator", "id", getPackageName()));
-                                if (root != null) {
-                                    int left = root.getPaddingLeft();
-                                    int right = root.getPaddingRight();
-                                    int bottom = root.getPaddingBottom();
-                                    if (root.getPaddingTop() != 0) {
-                                        root.setPadding(left, 0, right, bottom);
-                                    }
-                                }
-                            } catch (Exception ignore) { }
-                        } else {
-                            // When showing nav again, request insets so listener reapplies proper padding/margin
-                            View root = findViewById(getResources().getIdentifier("root_coordinator", "id", getPackageName()));
-                            if (root != null) root.requestApplyInsets();
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.w("MainActivity", "Error adjusting WebView padding/margin post nav-change", e);
-                }
-            });
-        } catch (Exception ignored) { }
-    }
     private boolean deepLinkHandlersAttached = false;
     private WebView mainWebView = null;
-    // Cache one WebView per tab so switching tabs preserves state instead of reloading
-    private WebView[] tabWebViews = new WebView[3];
-    // Parent container and insertion index where webviews are attached/replaced
-    private android.view.ViewGroup webviewParent = null;
-    private int webviewIndexInParent = -1;
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 100;
     private static final int AUDIO_PERMISSION_REQUEST_CODE = 101;
     
-    private android.widget.LinearLayout browserControlsBar;
-    private android.widget.ImageButton btnBack, btnForward, btnReload;
-    private android.widget.EditText urlBar;
-    private android.content.SharedPreferences prefs;
-    private android.content.SharedPreferences.OnSharedPreferenceChangeListener prefListener;
-
-    private GestureDetector gestureDetector;
-    private final Handler uiHandler = new Handler(Looper.getMainLooper());
-    private String currentUrlShown = null;
-    // Track whether the user is actively editing the url bar to avoid clobbering input
-    private boolean urlBarUserEditing = false;
-    // Track whether we've hidden the system navigation/status bars so inset handling can respect it
-    private boolean systemNavHidden = false;
-    // Tab state: 1 = home_page, 2 = home_page_2, 3 = home_page_3
-    private int currentTab = 1;
-    private static final int MAX_TABS = 3;
-    // Track last programmatic URL we asked the WebView to load (for debugging and to avoid overrides)
-    private String lastProgrammaticUrl = null;
-
-    private int threeFingerTapCount = 0;
-    private long lastThreeFingerTapTime = 0;
-    private static final int TRIPLE_TAP_TIMEOUT_MS = 1000;
+    // Gesture detection removed for build
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        try {
+        // ...existing code...
+        // Set up browser controls UI
+        setContentView(R.layout.activity_main);
+        mainWebView = findViewById(R.id.main_webview);
+        browserControlsBar = findViewById(R.id.browser_controls_bar);
+        btnBack = findViewById(R.id.btn_back);
+        btnForward = findViewById(R.id.btn_forward);
+        btnReload = findViewById(R.id.btn_reload);
+        urlBar = findViewById(R.id.url_bar);
+
+        // (Gesture detection removed for build)
         // Initialize preferences once at the top
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         // Show debug toast for exact alarm permission if enabled
         boolean showDebugToast = prefs.getBoolean("show_debug_toast", false);
         if (showDebugToast && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
@@ -233,18 +137,8 @@ public class MainActivity extends BridgeActivity {
         }
         super.onCreate(savedInstanceState);
 
-        // Set up layout and browser controls UI
+        // Set up browser controls UI
         setContentView(R.layout.activity_main);
-        try {
-            View root = findViewById(R.id.root_coordinator);
-            if (root != null) {
-                root.setFocusable(true);
-                root.setFocusableInTouchMode(true);
-                root.requestFocus();
-            }
-            // Hide keyboard on startup to avoid EditText grabbing focus
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        } catch (Exception ignore) { }
         mainWebView = findViewById(R.id.main_webview);
         browserControlsBar = findViewById(R.id.browser_controls_bar);
         btnBack = findViewById(R.id.btn_back);
@@ -252,140 +146,120 @@ public class MainActivity extends BridgeActivity {
         btnReload = findViewById(R.id.btn_reload);
         urlBar = findViewById(R.id.url_bar);
 
-        // Wire browser control buttons
-        btnBack.setOnClickListener(v -> { if (mainWebView != null && mainWebView.canGoBack()) mainWebView.goBack(); });
-        btnForward.setOnClickListener(v -> { if (mainWebView != null && mainWebView.canGoForward()) mainWebView.goForward(); });
-        btnReload.setOnClickListener(v -> { if (mainWebView != null) mainWebView.reload(); });
+        // WebView settings (ensure not overridden by setupJavaScriptInterface)
+        WebSettings ws = mainWebView.getSettings();
+        ws.setJavaScriptEnabled(true);
+        ws.setDomStorageEnabled(true);
+        ws.setDatabaseEnabled(true);
+        ws.setAllowFileAccess(true);
+        ws.setAllowContentAccess(true);
+        ws.setAllowUniversalAccessFromFileURLs(true);
+        ws.setAllowFileAccessFromFileURLs(true);
+        ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        ws.setJavaScriptCanOpenWindowsAutomatically(true);
+        ws.setMediaPlaybackRequiresUserGesture(false);
+        ws.setCacheMode(WebSettings.LOAD_DEFAULT);
+        ws.setLoadWithOverviewMode(true);
+        ws.setUseWideViewPort(true);
+        String defaultUserAgent = ws.getUserAgentString();
+        String customUserAgent = defaultUserAgent.replace("; wv", "").replace("Version/4.0 ", "");
+        if (!customUserAgent.contains("Chrome/")) {
+            customUserAgent = customUserAgent + " Chrome/120.0.0.0";
+        }
+        ws.setUserAgentString(customUserAgent);
 
-        // URL bar behavior
+
+        btnBack.setOnClickListener(v -> {
+            if (mainWebView != null && mainWebView.canGoBack()) mainWebView.goBack();
+        });
+        btnForward.setOnClickListener(v -> {
+            if (mainWebView != null && mainWebView.canGoForward()) mainWebView.goForward();
+        });
+        btnReload.setOnClickListener(v -> {
+            if (mainWebView != null) mainWebView.reload();
+        });
+
+        // URL bar listeners
         urlBar.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) { urlBar.setTextSize(18f); urlBar.setMaxLines(2); }
-            else { urlBar.setTextSize(14f); urlBar.setMaxLines(1); }
-            // When focus is lost, assume user finished editing
-            if (!hasFocus) urlBarUserEditing = false;
+            if (hasFocus) {
+                urlBar.setTextSize(18f);
+                urlBar.setMaxLines(2);
+            } else {
+                urlBar.setTextSize(14f);
+                urlBar.setMaxLines(1);
+            }
         });
         urlBar.setOnEditorActionListener((v, actionId, event) -> {
             String url = urlBar.getText().toString().trim();
             if (!url.isEmpty()) {
-                if (!url.startsWith("http://") && !url.startsWith("https://")) url = "https://" + url;
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    url = "https://" + url;
+                }
                 if (mainWebView != null) mainWebView.loadUrl(url);
                 urlBar.clearFocus();
-                urlBarUserEditing = false;
             }
             return true;
         });
 
-        // Track user edits so we don't overwrite while typing
-        urlBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
+        // Load home page from preferences
+        String homeUrl = prefs.getString("home_page", "https://sunflower-land.com/play/?ref=iSPANK");
+        if (mainWebView != null) {
+            mainWebView.loadUrl(homeUrl);
+            urlBar.setText(homeUrl);
+        }
+
+        // (Gesture detection removed for build)
+
+        // Update URL bar when page changes
+        mainWebView.setWebViewClient(new android.webkit.WebViewClient() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try { urlBarUserEditing = urlBar.isFocused(); } catch (Exception ignored) { }
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                if (!urlBar.isFocused()) urlBar.setText(url);
             }
-
             @Override
-            public void afterTextChanged(Editable s) { }
+            public void onPageFinished(WebView view, String url) {
+                // Always get the actual loaded URL from the WebView
+                if (!urlBar.isFocused() && mainWebView != null) urlBar.setText(mainWebView.getUrl());
+            }
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                Log.e("MainActivity", "WebView error: code=" + errorCode + " desc=" + description + " url=" + failingUrl);
+            }
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (!urlBar.isFocused()) urlBar.setText(url);
+                return false;
+            }
         });
 
-        // Show/hide browser controls according to preference
+        // Set browser controls visibility based on preference
         boolean hideControls = prefs.getBoolean("no_browser_controls", false);
-        if (browserControlsBar != null) browserControlsBar.setVisibility(hideControls ? View.GONE : View.VISIBLE);
+        browserControlsBar.setVisibility(hideControls ? android.view.View.GONE : android.view.View.VISIBLE);
 
-        // Listen for preference changes to update UI and home page dynamically
+        // Listen for preference changes
         prefListener = (sharedPreferences, key) -> {
             if ("home_page".equals(key)) {
                 String url = sharedPreferences.getString("home_page", "https://sunflower-land.com/play/?ref=iSPANK");
-                // Only reload if the active tab is tab 1
-                if (mainWebView != null && currentTab == 1) {
-                    Log.d("MainActivity", "Preference changed: home_page -> reloading because currentTab==1: " + url);
-                    loadTabUrl(1, true);
-                } else {
-                    Log.d("MainActivity", "Preference changed: home_page (ignored because currentTab!=1)");
-                }
-            } else if ("home_page_2".equals(key)) {
-                String url = sharedPreferences.getString("home_page_2", "https://sfl.world");
-                if (mainWebView != null && currentTab == 2) {
-                    Log.d("MainActivity", "Preference changed: home_page_2 -> reloading for currentTab==2: " + url);
-                    loadTabUrl(2, true);
-                } else {
-                    Log.d("MainActivity", "Preference changed: home_page_2 (ignored because currentTab!=2)");
-                }
-            } else if ("home_page_3".equals(key)) {
-                String url = sharedPreferences.getString("home_page_3", "https://wiki.sfl.world");
-                if (mainWebView != null && currentTab == 3) {
-                    Log.d("MainActivity", "Preference changed: home_page_3 -> reloading for currentTab==3: " + url);
-                    loadTabUrl(3, true);
-                } else {
-                    Log.d("MainActivity", "Preference changed: home_page_3 (ignored because currentTab!=3)");
-                }
+                if (mainWebView != null) mainWebView.loadUrl(url);
+                if (urlBar != null) urlBar.setText(url);
             } else if ("no_browser_controls".equals(key)) {
                 boolean hide = sharedPreferences.getBoolean("no_browser_controls", false);
-                if (browserControlsBar != null) browserControlsBar.setVisibility(hide ? View.GONE : View.VISIBLE);
-                // Hide/show system navigation according to preference
-                setSystemNavHidden(hide);
+                if (browserControlsBar != null) browserControlsBar.setVisibility(hide ? android.view.View.GONE : android.view.View.VISIBLE);
             }
         };
         prefs.registerOnSharedPreferenceChangeListener(prefListener);
 
-        // Load home page from settings (use centralized loader)
-        if (mainWebView != null) {
-            loadTabUrl(currentTab, true);
-            try {
-                // Ensure the URL bar is not focused on startup so WebViewClient updates can update it.
-                if (urlBar != null) {
-                    urlBar.clearFocus();
-                    android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
-                    if (imm != null) imm.hideSoftInputFromWindow(urlBar.getWindowToken(), 0);
-                }
-                // Prefer WebView to have focus so navigation events can update the UI
-                mainWebView.requestFocus(android.view.View.FOCUS_DOWN);
-            } catch (Exception ignore) { }
-        }
-
-        // Ensure WebView content appears above the system navigation bar (soft keys)
-        try {
-            int navBarHeight = 0;
-            int resId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-            if (resId > 0) {
-                navBarHeight = getResources().getDimensionPixelSize(resId);
-            }
-            if (mainWebView != null && navBarHeight > 0) {
-                // Add bottom padding equal to navigation bar height so content isn't obscured
-                mainWebView.setPadding(
-                    mainWebView.getPaddingLeft(),
-                    mainWebView.getPaddingTop(),
-                    mainWebView.getPaddingRight(),
-                    navBarHeight
-                );
-                mainWebView.setClipToPadding(false);
-                try {
-                    android.view.ViewGroup.LayoutParams lp = mainWebView.getLayoutParams();
-                    if (lp instanceof android.widget.LinearLayout.LayoutParams) {
-                        android.widget.LinearLayout.LayoutParams llp = (android.widget.LinearLayout.LayoutParams) lp;
-                        if (llp.bottomMargin != navBarHeight) {
-                            llp.bottomMargin = navBarHeight;
-                            mainWebView.setLayoutParams(llp);
-                        }
-                    }
-                } catch (Exception ignore) { }
-                Log.d("MainActivity", "Applied navigation bar bottom padding/margin: " + navBarHeight);
-            }
-        } catch (Exception e) {
-            Log.w("MainActivity", "Could not apply navigation bar inset padding", e);
-        }
-
         // Apply orientation setting on startup
         applyOrientationSetting(null);
-        
+
         // Initialize debug log system
         DebugLog.init(this);
-        
+
         Log.i("NOTIFICATION_DEBUG", "=== Sunflower Land App Starting ===");
         Log.i("NOTIFICATION_DEBUG", "Process ID: " + android.os.Process.myPid());
         Log.i("NOTIFICATION_DEBUG", "App Package: " + getPackageName());
-        
+
         // Check if "Only Notifications" mode is enabled
         boolean onlyNotificationsMode = prefs.getBoolean("only_notifications", false);
         boolean bypassOnlyNotifications = getIntent().getBooleanExtra("bypass_notifications_only", false);
@@ -397,6 +271,7 @@ public class MainActivity extends BridgeActivity {
             finish();
             return;
         }
+
 
         // Request notification permission on Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -433,437 +308,15 @@ public class MainActivity extends BridgeActivity {
             }
         }
 
-        // Setup JavaScript interface immediately (don't defer)
-        // This configures WebView settings and clients needed for the page to load
-        setupJavaScriptInterface();
-        
-        // Apply WindowInsets listener so we can ensure WebView sits above system navigation
-        try {
-            final View rootView = findViewById(getResources().getIdentifier("root_coordinator", "id", getPackageName()));
-            if (rootView != null) {
-                ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
-                    try {
-                        WindowInsetsCompat compat = insets;
-                        Insets navInsets = compat.getInsets(WindowInsetsCompat.Type.navigationBars());
-                        int bottomInset = navInsets.bottom;
 
-                        // Apply top inset (status bar) as padding to the root view so the entire
-                        // app UI is slightly offset downward to account for the notification/status bar.
-                        Insets statusInsets = compat.getInsets(WindowInsetsCompat.Type.statusBars());
-                        // If we've explicitly hidden system nav/status bars via the toggle, ignore top inset
-                        int topInset = systemNavHidden ? 0 : statusInsets.top;
-                        try {
-                            if (v != null) {
-                                int left = v.getPaddingLeft();
-                                int right = v.getPaddingRight();
-                                int bottom = v.getPaddingBottom();
-                                if (v.getPaddingTop() != topInset) {
-                                    v.setPadding(left, topInset, right, bottom);
-                                    Log.d("MainActivity", "WindowInsets applied top padding: " + topInset);
-                                }
-                            }
-                        } catch (Exception ignore) { }
-
-                        if (mainWebView != null) {
-                            // Apply bottom inset to WebView so content is not obscured by nav bar
-                            if (bottomInset > 0) {
-                                mainWebView.setPadding(
-                                    mainWebView.getPaddingLeft(),
-                                    mainWebView.getPaddingTop(),
-                                    mainWebView.getPaddingRight(),
-                                    bottomInset
-                                );
-                                mainWebView.setClipToPadding(false);
-                                try {
-                                    android.view.ViewGroup.LayoutParams lp = mainWebView.getLayoutParams();
-                                    if (lp instanceof android.widget.LinearLayout.LayoutParams) {
-                                        android.widget.LinearLayout.LayoutParams llp = (android.widget.LinearLayout.LayoutParams) lp;
-                                        if (llp.bottomMargin != bottomInset) {
-                                            llp.bottomMargin = bottomInset;
-                                            mainWebView.setLayoutParams(llp);
-                                        }
-                                    }
-                                } catch (Exception ignore) { }
-                                Log.d("MainActivity", "WindowInsets applied bottom padding/margin: " + bottomInset);
-                            } else {
-                                // If no bottom inset, ensure any previous bottom margin/padding remains or is cleared
-                                // (we intentionally avoid forcing removal here; setSystemNavHidden handles hide-case)
-                            }
-                        }
-                    } catch (Exception e) {
-                        Log.w("MainActivity", "Error applying window insets to WebView/root", e);
-                    }
-                    return insets;
-                });
-                // Request insets now so listener runs at least once
-                rootView.requestApplyInsets();
-            }
+        // (Optional) If you need custom JS interface or deep link handling, re-add here, but do not override WebViewClient above.
         } catch (Exception e) {
-            Log.w("MainActivity", "WindowInsets handler not applied", e);
-        }
-
-        // Respect the initial `no_browser_controls` preference by hiding system nav if enabled
-        try {
-            boolean initialHide = prefs.getBoolean("no_browser_controls", false);
-            setSystemNavHidden(initialHide);
-        } catch (Exception ignored) { }
-
-        handleIntent(getIntent());
-
-        // Attach deep-link interceptors immediately - CRITICAL for WebView functionality
-        attachDeepLinkHandlers();
-        
-        // Auto-start notification manager immediately (it runs in separate process, won't interfere)
-        autoStartNotificationManager();
-        
-        // OPTIMIZATION: Defer UI dialogs and heavy JavaScript injection to run AFTER WebView loads
-        // This prevents blocking the browser from loading
-        this.getWindow().getDecorView().post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // Show first-launch dialog after UI is ready (only shows on first launch due to flag)
-                    showFirstLaunchDialog();
-                } catch (Exception e) {
-                    Log.e("MainActivity", "Error in deferred initialization: " + e.getMessage(), e);
-                }
-            }
-        });
-        
-        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return true;
-            }
-        });
-
-    }
-
-    private String getHomeUrlForTab(int tab) {
-        try {
-            android.content.SharedPreferences sp = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-            switch (tab) {
-                case 2:
-                    return sp.getString("home_page_2", null);
-                case 3:
-                    return sp.getString("home_page_3", null);
-                case 1:
-                default:
-                    return sp.getString("home_page", null);
-            }
-        } catch (Exception e) {
-            Log.w("MainActivity", "Error reading home URL for tab " + tab, e);
-            return null;
+            Log.e("MainActivity", "Error in onCreate or initialization", e);
         }
     }
+    // End of onCreate or initialization method
 
-    /**
-     * Load the configured home URL for a tab and apply the same behavior used at startup.
-     * This centralizes tab loading so tab 2/3 behave the same as tab 1.
-     */
-    private void loadTabUrl(int tab) {
-        // Backwards-compatible overload: default to forcing a load (existing behavior)
-        loadTabUrl(tab, true);
-    }
-
-    private void loadTabUrl(int tab, boolean forceReload) {
-        uiHandler.post(() -> {
-            try {
-                // Read prefs directly for diagnostics
-                android.content.SharedPreferences sp = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
-                String p1 = sp.getString("home_page", "<missing>");
-                String p2 = sp.getString("home_page_2", "<missing>");
-                String p3 = sp.getString("home_page_3", "<missing>");
-                String url = getHomeUrlForTab(tab);
-                if (url == null || url.trim().isEmpty()) {
-                    Log.w("MainActivity", "No configured home URL for tab " + tab + " - skipping load");
-                    return;
-                }
-                Log.d("MainActivity", "loadTabUrl(tab=" + tab + ") -> " + url + " (lastProgrammaticUrl=" + lastProgrammaticUrl + ") forceReload=" + forceReload);
-                Log.d("MainActivity", "Stored prefs: home_page=" + p1 + ", home_page_2=" + p2 + ", home_page_3=" + p3);
-
-                // If we have a parent container and cached tab WebViews, swap in the requested tab's WebView
-                try {
-                    WebView desired = null;
-                    try { desired = tabWebViews[tab - 1]; } catch (Exception ignored) { desired = null; }
-
-                    if (webviewParent != null) {
-                        if (desired == null) {
-                            // Lazily create + configure the WebView for this tab
-                            desired = createTabWebView(tab);
-                            tabWebViews[tab - 1] = desired;
-                            try { desired.loadUrl(url); } catch (Exception ignore) { }
-                        } else {
-                            // If forceReload is true, attempt to load the configured URL; otherwise preserve existing tab state
-                            if (forceReload) {
-                                try {
-                                    String cur = null;
-                                    try { cur = desired.getUrl(); } catch (Exception ignore) { cur = null; }
-                                    if (cur == null || !cur.equals(url)) {
-                                        try { desired.loadUrl(url); } catch (Exception ignore) { }
-                                    }
-                                } catch (Exception ignore) { }
-                            }
-                        }
-
-                        // Swap into parent if not already visible
-                        if (desired != mainWebView) {
-                            try {
-                                if (mainWebView != null && mainWebView.getParent() == webviewParent) {
-                                    webviewParent.removeView(mainWebView);
-                                }
-                                if (desired.getParent() instanceof android.view.ViewGroup) {
-                                    ((android.view.ViewGroup) desired.getParent()).removeView(desired);
-                                }
-                                webviewParent.addView(desired, webviewIndexInParent);
-                                mainWebView = desired;
-                            } catch (Exception e) {
-                                Log.w("MainActivity", "Failed to swap WebView for tab " + tab, e);
-                            }
-                        }
-
-                        lastProgrammaticUrl = url;
-                    } else {
-                        // No swap container available — fall back to single-WebView behavior
-                        if (mainWebView != null) {
-                            try { mainWebView.stopLoading(); } catch (Exception ignore) { }
-                            try {
-                                lastProgrammaticUrl = url;
-                                mainWebView.loadUrl(url);
-                            } catch (Exception e) {
-                                Log.w("MainActivity", "Failed to load URL for tab " + tab + ": " + url, e);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.w("MainActivity", "Error swapping/creating tab WebView for tab " + tab, e);
-                }
-
-                try {
-                    if (urlBar != null && !urlBarUserEditing) uiHandler.post(() -> { try { urlBar.setText(url); } catch (Exception ignore) {} });
-                } catch (Exception ignore) { }
-                try {
-                    // Ensure keyboard is hidden and focus is on WebView like startup
-                    if (urlBar != null) {
-                        urlBar.clearFocus();
-                        android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
-                        if (imm != null) imm.hideSoftInputFromWindow(urlBar.getWindowToken(), 0);
-                    }
-                    if (mainWebView != null) mainWebView.requestFocus(android.view.View.FOCUS_DOWN);
-                } catch (Exception ignore) { }
-                try { if (btnBack != null && mainWebView != null) btnBack.setEnabled(mainWebView.canGoBack()); } catch (Exception ignore) {}
-                try { if (btnForward != null && mainWebView != null) btnForward.setEnabled(mainWebView.canGoForward()); } catch (Exception ignore) {}
-
-            } catch (Exception e) {
-                Log.w("MainActivity", "Error in loadTabUrl for tab " + tab, e);
-            }
-        });
-    }
-
-    private void switchTab(boolean up) {
-        uiHandler.post(() -> {
-            try {
-                if (up) {
-                    currentTab = (currentTab % MAX_TABS) + 1;
-                } else {
-                    currentTab = (currentTab - 1);
-                    if (currentTab < 1) currentTab = MAX_TABS;
-                }
-                Log.d("MainActivity", "Switching to tab " + currentTab + " (lastProgrammaticUrl=" + lastProgrammaticUrl + ")");
-                    // Use centralized loader but do not force reload when switching tabs
-                    loadTabUrl(currentTab, false);
-                try {
-                    if (urlBar != null && !urlBarUserEditing) {
-                        try { urlBar.setText(getHomeUrlForTab(currentTab)); } catch (Exception ignore) {}
-                    }
-                } catch (Exception ignore) { }
-            } catch (Exception e) {
-                Log.w("MainActivity", "Error switching tab", e);
-            }
-        });
-    }
-
-    /**
-     * Create and configure a WebView instance for a tab. This mirrors the important
-     * settings we apply to the bridge WebView so tab WebViews behave similarly.
-     */
-    private WebView createTabWebView(int tab) {
-        try {
-            WebView wv = new WebView(this);
-            // match layout of placeholder
-            android.view.ViewGroup.LayoutParams lp = new android.view.ViewGroup.LayoutParams(
-                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                    android.view.ViewGroup.LayoutParams.MATCH_PARENT
-            );
-            wv.setLayoutParams(lp);
-
-            WebSettings ws = wv.getSettings();
-            ws.setJavaScriptEnabled(true);
-            ws.setDomStorageEnabled(true);
-            ws.setDatabaseEnabled(true);
-            ws.setAllowFileAccess(true);
-            ws.setAllowContentAccess(true);
-            ws.setAllowUniversalAccessFromFileURLs(true);
-            ws.setAllowFileAccessFromFileURLs(true);
-            ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-            ws.setJavaScriptCanOpenWindowsAutomatically(true);
-            ws.setMediaPlaybackRequiresUserGesture(false);
-            ws.setCacheMode(WebSettings.LOAD_DEFAULT);
-            ws.setLoadWithOverviewMode(true);
-            ws.setUseWideViewPort(true);
-            ws.setBuiltInZoomControls(true);
-            ws.setDisplayZoomControls(false);
-            ws.setSupportZoom(true);
-            ws.setGeolocationEnabled(true);
-            try {
-                String defaultUserAgent = ws.getUserAgentString();
-                String customUserAgent = defaultUserAgent.replace("; wv", "").replace("Version/4.0 ", "");
-                if (!customUserAgent.contains("Chrome/")) customUserAgent = customUserAgent + " Chrome/120.0.0.0";
-                ws.setUserAgentString(customUserAgent);
-            } catch (Exception ignored) { }
-
-            wv.setWebChromeClient(new android.webkit.WebChromeClient() {
-                @Override
-                public boolean onConsoleMessage(android.webkit.ConsoleMessage cm) {
-                    String message = cm.message();
-                    Log.d("WebView Console", String.format("[%s:%d] %s", cm.sourceId(), cm.lineNumber(), message));
-                    return true;
-                }
-            });
-
-            wv.setWebViewClient(new android.webkit.WebViewClient() {
-                @Override
-                public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
-                    Log.d("MainActivity", "(tab) onPageStarted: " + url);
-                    // handle deep links similarly
-                    try {
-                        if (url != null && (url.contains("keys.coinbase.com") || url.contains("coinbase.com") || url.contains("login.coinbase"))) {
-                            try {
-                                view.stopLoading();
-                                Intent extIntent = new Intent(Intent.ACTION_VIEW);
-                                extIntent.setData(Uri.parse(url));
-                                extIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                try { extIntent.setPackage("com.coinbase.android"); startActivity(extIntent); } catch (Exception e) { extIntent.setPackage(null); startActivity(extIntent); }
-                            } catch (Exception e) { Log.e("MainActivity", "Failed to handle Coinbase URL in tab webview", e); }
-                        }
-                    } catch (Exception ignore) { }
-
-                    // Update URL bar unless user is editing it
-                    try {
-                        if (urlBar != null && !urlBarUserEditing) {
-                            uiHandler.post(() -> { try { urlBar.setText(url); } catch (Exception ignore) {} });
-                        }
-                    } catch (Exception ignore) { }
-                }
-
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    Log.d("MainActivity", "(tab) Page load finished: " + url);
-                    try {
-                        if (urlBar != null && !urlBarUserEditing) uiHandler.post(() -> { try { urlBar.setText(url); } catch (Exception ignore) {} });
-                        if (btnBack != null) btnBack.setEnabled(view.canGoBack());
-                        if (btnForward != null) btnForward.setEnabled(view.canGoForward());
-                    } catch (Exception ignore) { }
-                }
-            });
-
-                // Attach gesture handlers so this tab supports three-finger gestures like the bridge WebView
-                try { attachGestureHandlers(wv); } catch (Exception ignored) {}
-
-                return wv;
-        } catch (Exception e) {
-            Log.w("MainActivity", "Failed to create tab WebView", e);
-            return null;
-        }
-    }
-
-        private void attachGestureHandlers(WebView wv) {
-            try {
-                wv.setOnTouchListener(new View.OnTouchListener() {
-                    private int threeFingerTapCount = 0;
-                    private long lastThreeFingerTapTime = 0;
-                    private static final int TRIPLE_TAP_TIMEOUT_MS = 1000;
-                    private float threeFingerStartAvgX = -1f;
-                    private boolean threeFingerSwipeTriggered = false;
-                    private long lastThreeFingerSwipeTime = 0L;
-                    private final int SWIPE_COOLDOWN_MS = 600; // ms
-                    private final int SWIPE_THRESHOLD_PX = 200;
-
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        int action = event.getActionMasked();
-                        if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
-                            if (event.getPointerCount() == 3) {
-                                long now = System.currentTimeMillis();
-                                if (now - lastThreeFingerTapTime > TRIPLE_TAP_TIMEOUT_MS) threeFingerTapCount = 0;
-                                threeFingerTapCount++;
-                                lastThreeFingerTapTime = now;
-                                if (threeFingerTapCount == 3) {
-                                    openSettingsPage();
-                                    threeFingerTapCount = 0;
-                                    threeFingerStartAvgX = -1f;
-                                    threeFingerSwipeTriggered = false;
-                                }
-                            }
-                            if (event.getPointerCount() >= 3) {
-                                try {
-                                    float sum = 0f;
-                                    for (int i = 0; i < 3; i++) sum += event.getX(i);
-                                    threeFingerStartAvgX = sum / 3f;
-                                    threeFingerSwipeTriggered = false;
-                                } catch (Exception ignore) { threeFingerStartAvgX = -1f; }
-                            }
-                        }
-
-                        if (action == MotionEvent.ACTION_MOVE) {
-                            if (event.getPointerCount() >= 3 && threeFingerStartAvgX >= 0 && !threeFingerSwipeTriggered) {
-                                try {
-                                    float sum = 0f;
-                                    for (int i = 0; i < 3; i++) sum += event.getX(i);
-                                    float curAvg = sum / 3f;
-                                    float dx = curAvg - threeFingerStartAvgX;
-                                    if (Math.abs(dx) > SWIPE_THRESHOLD_PX) {
-                                        long nowSwipe = System.currentTimeMillis();
-                                        if (nowSwipe - lastThreeFingerSwipeTime > SWIPE_COOLDOWN_MS) {
-                                            threeFingerSwipeTriggered = true;
-                                            lastThreeFingerSwipeTime = nowSwipe;
-                                            if (dx < 0) MainActivity.this.switchTab(true); else MainActivity.this.switchTab(false);
-                                        } else {
-                                            threeFingerSwipeTriggered = true;
-                                        }
-                                    }
-                                } catch (Exception ignore) { }
-                            }
-                        }
-
-                        if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP || action == MotionEvent.ACTION_CANCEL) {
-                            try {
-                                if (event.getPointerCount() < 3) {
-                                    threeFingerStartAvgX = -1f;
-                                    threeFingerSwipeTriggered = false;
-                                }
-                            } catch (Exception ignore) { threeFingerStartAvgX = -1f; threeFingerSwipeTriggered = false; }
-                        }
-                        return false;
-                    }
-                });
-            } catch (Exception e) {
-                Log.w("MainActivity", "Failed to attach gesture handlers", e);
-            }
-        }
-        // Start polling the WebView URL to keep the address bar in sync (helps with SPA pushState updates)
-        // URL synchronization will be handled by WebViewClient lifecycle callbacks (simple, reliable)
-
-    @Override
-    public void onDestroy() {
-        try {
-            if (prefs != null && prefListener != null) prefs.unregisterOnSharedPreferenceChangeListener(prefListener);
-        } catch (Exception ignore) { }
-        super.onDestroy();
-    }
-    
     private void setupJavaScriptInterface() {
-        try {
             Object webViewObj = null;
             try {
                 webViewObj = this.bridge.getWebView();
@@ -912,193 +365,133 @@ public class MainActivity extends BridgeActivity {
             if (wv != null) {
                 // Store WebView reference for back button functionality
                 this.mainWebView = wv;
-                try {
-                    // If our layout contains a placeholder WebView (`R.id.main_webview`), replace it with the bridge WebView
-                    View placeholder = findViewById(getResources().getIdentifier("main_webview", "id", getPackageName()));
-                    String placeholderUrl = null;
-                    if (placeholder instanceof WebView) {
-                        try {
-                            placeholderUrl = ((WebView) placeholder).getUrl();
-                        } catch (Exception ignore) { }
-                    }
-                    if (placeholder != null && placeholder.getParent() instanceof android.view.ViewGroup) {
-                        android.view.ViewGroup parent = (android.view.ViewGroup) placeholder.getParent();
-                        int index = parent.indexOfChild(placeholder);
-                        // Remove placeholder and insert bridge WebView in its place
-                            parent.removeView(placeholder);
-                            try {
-                                // detach wv from any existing parent first
-                                if (wv.getParent() instanceof android.view.ViewGroup) {
-                                    ((android.view.ViewGroup) wv.getParent()).removeView(wv);
-                                }
-                            } catch (Exception ignore) { }
-                            // Remember parent/index so we can swap tab WebViews without rebuilding layout
-                            webviewParent = parent;
-                            webviewIndexInParent = index;
-                            parent.addView(wv, index);
-                            // Treat the bridge WebView as tab 1 so it preserves its state when switching
-                            try { tabWebViews[0] = wv; } catch (Exception ignored) { }
+                // Gesture detection removed for build
+            }
 
-                        // Prefer loading the active tab's configured home URL into the bridge WebView
-                        try {
-                            String desired = getHomeUrlForTab(currentTab);
-                            if (desired != null && (wv.getUrl() == null || wv.getUrl().isEmpty() || !wv.getUrl().equals(desired))) {
-                                Log.d("MainActivity", "Attaching bridge WebView - loading desired tab URL: " + desired);
-                                try { wv.loadUrl(desired); } catch (Exception ignore) { }
-                            }
-                        } catch (Exception e) {
-                            // Fallback: if something goes wrong, and placeholder had a URL, attempt to load it
-                            try {
-                                if (placeholderUrl != null && (wv.getUrl() == null || wv.getUrl().isEmpty() || !wv.getUrl().equals(placeholderUrl))) {
-                                    wv.loadUrl(placeholderUrl);
-                                }
-                            } catch (Exception ignore) { }
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.w("MainActivity", "Could not attach bridge WebView into layout placeholder", e);
-                }
+            getWindow().setFlags(
+                android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+            );
 
-                // Attach gesture detection to WebView
-                attachGestureHandlers(wv);
+            wv.setLayerType(WebView.LAYER_TYPE_HARDWARE, null);
 
-                getWindow().setFlags(
-                    android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                    android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
-                );
-
-                wv.setLayerType(WebView.LAYER_TYPE_HARDWARE, null);
-
-                WebSettings ws = wv.getSettings();
-                ws.setJavaScriptEnabled(true);
-                ws.setDomStorageEnabled(true);
-                ws.setDatabaseEnabled(true);
-                ws.setAllowFileAccess(true);
-                ws.setAllowContentAccess(true);
-                ws.setAllowUniversalAccessFromFileURLs(true);
-                ws.setAllowFileAccessFromFileURLs(true);
+            WebSettings ws = wv.getSettings();
+            ws.setJavaScriptEnabled(true);
+            ws.setDomStorageEnabled(true);
+            ws.setDatabaseEnabled(true);
+            ws.setAllowFileAccess(true);
+            ws.setAllowContentAccess(true);
+            ws.setAllowUniversalAccessFromFileURLs(true);
+            ws.setAllowFileAccessFromFileURLs(true);
+            ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            ws.setJavaScriptCanOpenWindowsAutomatically(true);
+            ws.setMediaPlaybackRequiresUserGesture(false);
+            
+            // Use LOAD_DEFAULT to respect server cache headers
+            // This allows the game/website to control caching via HTTP headers
+            // (Cache-Control, ETag, Last-Modified, etc.)
+            // Only cache what the game/site explicitly requests to be cached
+            ws.setCacheMode(WebSettings.LOAD_DEFAULT);
+            
+            ws.setLoadWithOverviewMode(true);
+            ws.setUseWideViewPort(true);
+            
+            // Set User-Agent to make Google accept this as a secure browser
+            String defaultUserAgent = ws.getUserAgentString();
+            String customUserAgent = defaultUserAgent.replace("; wv", "").replace("Version/4.0 ", "");
+            if (!customUserAgent.contains("Chrome/")) {
+                // Add Chrome version if not present to satisfy Google's requirements
+                customUserAgent = customUserAgent + " Chrome/120.0.0.0";
+            }
+            ws.setUserAgentString(customUserAgent);
+            Log.d("MainActivity", "Set User-Agent: " + customUserAgent);
+            
+            // Additional settings to make WebView appear as a standard browser
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-                ws.setJavaScriptCanOpenWindowsAutomatically(true);
-                ws.setMediaPlaybackRequiresUserGesture(false);
-                
-                // Use LOAD_DEFAULT to respect server cache headers
-                // This allows the game/website to control caching via HTTP headers
-                // (Cache-Control, ETag, Last-Modified, etc.)
-                // Only cache what the game/site explicitly requests to be cached
-                ws.setCacheMode(WebSettings.LOAD_DEFAULT);
-                
-                ws.setLoadWithOverviewMode(true);
-                ws.setUseWideViewPort(true);
-                
-                // Set User-Agent to make Google accept this as a secure browser
-                String defaultUserAgent = ws.getUserAgentString();
-                String customUserAgent = defaultUserAgent.replace("; wv", "").replace("Version/4.0 ", "");
-                if (!customUserAgent.contains("Chrome/")) {
-                    // Add Chrome version if not present to satisfy Google's requirements
-                    customUserAgent = customUserAgent + " Chrome/120.0.0.0";
-                }
-                ws.setUserAgentString(customUserAgent);
-                Log.d("MainActivity", "Set User-Agent: " + customUserAgent);
-                
-                // Additional settings to make WebView appear as a standard browser
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ws.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-                }
-                
-                // Enable geolocation and other browser features
-                ws.setGeolocationEnabled(true);
-                ws.setBuiltInZoomControls(true);
-                ws.setDisplayZoomControls(false);
-                ws.setSupportZoom(true);
-                
-                // Security settings that help with Google OAuth
-                ws.setSaveFormData(false);
-                ws.setSavePassword(false);
-                
-                // Enable storage APIs
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ws.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
-                }
-                
-                // Enable remote debugging and console logging
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    WebView.setWebContentsDebuggingEnabled(true);
-                }
-                
-                // Add JavaScript interface for WebView functionality
-                try {
-                    // Keep a lightweight JS bridge for logging only. Do not update the address bar from JS.
-                    wv.addJavascriptInterface(new Object() {
-                        @android.webkit.JavascriptInterface
-                        public void jsLog(final String msg) {
-                            Log.i("JS_INTERFACE", "jsLog: " + msg);
-                        }
-                    }, "AndroidNative");
-                } catch (Exception e) {
-                    Log.w("MainActivity", "Failed to add JavascriptInterface", e);
-                }
-                Log.i("NOTIFICATION_DEBUG", "� WebView configured and ready");
-                wv.setWebChromeClient(new android.webkit.WebChromeClient() {
-                    @Override
-                    public boolean onConsoleMessage(android.webkit.ConsoleMessage cm) {
-                        String message = cm.message();
-                        Log.d("WebView Console", String.format("[%s:%d] %s", cm.sourceId(), cm.lineNumber(), message));
-                        
-                        // Log our API monitoring messages to NOTIFICATION_DEBUG
-                        if (message.contains("[SUNFLOWER]")) {
-                            Log.i("NOTIFICATION_DEBUG", "🌻 " + message);
-                        }
-                        
-                        // Specifically log game-related data with timestamps
-                        String lowerMsg = message.toLowerCase();
-                        if (lowerMsg.contains("soybean") || lowerMsg.contains("orange") || lowerMsg.contains("tomato") || 
-                            lowerMsg.contains("rice") || lowerMsg.contains("cow") || lowerMsg.contains("sheep") ||
-                            lowerMsg.contains("timestamp") || lowerMsg.contains("readyat") || lowerMsg.contains("completedat") ||
-                            lowerMsg.contains("harvestat") || lowerMsg.contains("finishedat") || lowerMsg.contains("crops") ||
-                            lowerMsg.contains("animals") || lowerMsg.contains("farm")) {
-                            Log.e("GAME_DATA", "🎮 FARM DATA: " + message);
-                        }
-                        return true;
+            }
+            
+            // Enable geolocation and other browser features
+            ws.setGeolocationEnabled(true);
+            ws.setBuiltInZoomControls(true);
+            ws.setDisplayZoomControls(false);
+            ws.setSupportZoom(true);
+            
+            // Security settings that help with Google OAuth
+            ws.setSaveFormData(false);
+            ws.setSavePassword(false);
+            
+            // Enable storage APIs
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ws.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+            }
+            
+            // Enable remote debugging and console logging
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
+            
+            // Add JavaScript interface for WebView functionality
+            Log.i("NOTIFICATION_DEBUG", "� WebView configured and ready");
+            wv.setWebChromeClient(new android.webkit.WebChromeClient() {
+                @Override
+                public boolean onConsoleMessage(android.webkit.ConsoleMessage cm) {
+                    String message = cm.message();
+                    Log.d("WebView Console", String.format("[%s:%d] %s", cm.sourceId(), cm.lineNumber(), message));
+                    // Log our API monitoring messages to NOTIFICATION_DEBUG
+                    if (message.contains("[SUNFLOWER]")) {
+                        Log.i("NOTIFICATION_DEBUG", "🌻 " + message);
                     }
+                    // Specifically log game-related data with timestamps
+                    String lowerMsg = message.toLowerCase();
+                    if (lowerMsg.contains("soybean") || lowerMsg.contains("orange") || lowerMsg.contains("tomato") || 
+                        lowerMsg.contains("rice") || lowerMsg.contains("cow") || lowerMsg.contains("sheep") ||
+                        lowerMsg.contains("timestamp") || lowerMsg.contains("readyat") || lowerMsg.contains("completedat") ||
+                        lowerMsg.contains("harvestat") || lowerMsg.contains("finishedat") || lowerMsg.contains("crops") ||
+                        lowerMsg.contains("animals") || lowerMsg.contains("farm")) {
+                        Log.e("GAME_DATA", "🎮 FARM DATA: " + message);
+                    }
+                    return true;
+                }
 
-                    @Override
-                    public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-                        // Intercept popup/new-window requests (e.g., window.open) and capture the URL
-                        WebView newWebView = new WebView(view.getContext());
-                        newWebView.setWebViewClient(new android.webkit.WebViewClient() {
-                            @Override
-                            public void onPageStarted(WebView w, String url, Bitmap favicon) {
-                                Log.d("MainActivity", "Popup requested URL: " + url);
-                                if (tryHandleDeepLink(url)) {
-                                    // Handled externally - stop loading in the temp view
-                                    try {
-                                        w.stopLoading();
-                                    } catch (Exception e) { }
-                                } else {
-                                    // If not a deep link, load in the main view
-                                    view.loadUrl(url);
-                                }
-                                // Cleanup: destroy temp webview
+                @Override
+                public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
+                    // Intercept popup/new-window requests (e.g., window.open) and capture the URL
+                    WebView newWebView = new WebView(view.getContext());
+                    newWebView.setWebViewClient(new android.webkit.WebViewClient() {
+                        @Override
+                        public void onPageStarted(WebView w, String url, Bitmap favicon) {
+                            Log.d("MainActivity", "Popup requested URL: " + url);
+                            if (tryHandleDeepLink(url)) {
+                                // Handled externally - stop loading in the temp view
                                 try {
-                                    w.destroy();
-                                } catch (Exception ex) { }
+                                    w.stopLoading();
+                                } catch (Exception e) { }
+                            } else {
+                                // If not a deep link, load in the main view
+                                view.loadUrl(url);
                             }
-                        });
-                        WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
-                        transport.setWebView(newWebView);
-                        resultMsg.sendToTarget();
-                        return true;
-                    }
-                    
-                    @Override
-                    public void onReceivedTitle(WebView view, String title) {
-                        super.onReceivedTitle(view, title);
-                        if (title != null && title.startsWith("FARM_DATA:")) {
-                            String jsonData = title.substring(10);
-                            Log.e("🎮 EXTRACTED_DATA", "Farm storage data: " + jsonData);
+                            // Cleanup: destroy temp webview
+                            try {
+                                w.destroy();
+                            } catch (Exception ex) { }
                         }
+                    });
+                    WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+                    transport.setWebView(newWebView);
+                    resultMsg.sendToTarget();
+                    return true;
+                }
+
+                @Override
+                public void onReceivedTitle(WebView view, String title) {
+                    super.onReceivedTitle(view, title);
+                    if (title != null && title.startsWith("FARM_DATA:")) {
+                        String jsonData = title.substring(10);
+                        Log.e("🎮 EXTRACTED_DATA", "Farm storage data: " + jsonData);
                     }
-                });
+                }
+            });
                 wv.setWebViewClient(new android.webkit.WebViewClient() {
                     @Override
                     public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
@@ -1135,18 +528,6 @@ public class MainActivity extends BridgeActivity {
                                 Log.e("MainActivity", "Failed to handle Coinbase URL in onPageStarted", e);
                             }
                         }
-                        // Update URL bar unless user is editing it
-                        try {
-                            if (urlBar != null) {
-                                Log.d("MainActivity", "Attempting to update urlBar in onPageStarted; urlBarUserEditing=" + urlBarUserEditing + " url=" + url);
-                                if (!urlBarUserEditing) {
-                                    uiHandler.post(() -> {
-                                        try { urlBar.setText(url); }
-                                        catch (Exception e) { Log.e("MainActivity", "Failed to set urlBar in onPageStarted", e); }
-                                    });
-                                }
-                            }
-                        } catch (Exception ignore) { }
                     }
                     @Override
                     public void onPageFinished(WebView view, String url) {
@@ -1191,8 +572,6 @@ public class MainActivity extends BridgeActivity {
                                         "document.addEventListener('click', function(e){ var a = e.target; while(a && a.tagName!=='A'){ a = a.parentElement; } if(a && a.href){ try{ var href = a.getAttribute('href'); console.log('Click intercepted on link: ' + href); if(href && (href.indexOf('http')!==0 || href.indexOf('keys.coinbase.com') !== -1 || href.indexOf('coinbase.com/connect') !== -1)){ e.preventDefault(); console.log('Blocked URL via click handler, redirecting: ' + href); window.location.href = 'https://__native_bridge__/open?u=' + encodeURIComponent(href); return false; } }catch(err){} } }, true);" +
                                         "var _fetch = window.fetch; window.fetch = function(url){  try{ if(url && (typeof url === 'string' && (url.indexOf('keys.coinbase.com') !== -1 || url.indexOf('coinbase.com/connect') !== -1))){ console.log('Blocked fetch to Coinbase: ' + url); window.location.href = 'https://__native_bridge__/open?u=' + encodeURIComponent(url); return Promise.reject('Blocked'); } }catch(e){} return _fetch.apply(this, arguments); };" +
                                         "document.addEventListener('submit', function(e){ var action = e.target.action || ''; console.log('Form submit detected: ' + action); if(action && (action.indexOf('keys.coinbase.com') !== -1 || action.indexOf('coinbase.com/connect') !== -1)){ e.preventDefault(); console.log('Blocked form submission to Coinbase: ' + action); window.location.href = 'https://__native_bridge__/open?u=' + encodeURIComponent(action); } }, true);" +
-                                        "})();" +
-                                        // (No SPA->native notifier: address bar is synced via WebViewClient callbacks only)
                                         "})();";
 
                                     Log.i("NOTIFICATION_DEBUG", "🚀 Injecting link interceptor JavaScript...");
@@ -1203,30 +582,6 @@ public class MainActivity extends BridgeActivity {
                                 }
                             }
                         }, 100);  // 100ms delay to allow page to render first
-                        // After page finished, update URL bar from the real WebView URL and update nav buttons
-                        try {
-                            if (urlBar != null) {
-                                Log.d("MainActivity", "Attempting to update urlBar in onPageFinished; urlBarUserEditing=" + urlBarUserEditing + " url=" + url);
-                                if (!urlBarUserEditing) {
-                                    String current = (url != null && !url.isEmpty()) ? url : (mainWebView != null ? mainWebView.getUrl() : null);
-                                    if (current != null) {
-                                        uiHandler.post(() -> {
-                                            try { urlBar.setText(current); }
-                                            catch (Exception e) { Log.e("MainActivity", "Failed to set urlBar in onPageFinished", e); }
-                                        });
-                                    }
-                                }
-                            }
-                            if (btnBack != null) btnBack.setEnabled(mainWebView != null && mainWebView.canGoBack());
-                            if (btnForward != null) btnForward.setEnabled(mainWebView != null && mainWebView.canGoForward());
-                        } catch (Exception ignore) { }
-
-                        // NOTE: Deliberately do NOT perform JS polling/fallback here.
-                        // Address bar updates are driven only by WebViewClient lifecycle
-                        // callbacks (onPageStarted/onPageFinished) and by the user
-                        // manually editing the `urlBar`. This prevents unexpected
-                        // overwrites while the user is typing and keeps the WebView
-                        // as the authoritative source of URL changes.
                     }
                     @Override
                     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -1347,9 +702,7 @@ public class MainActivity extends BridgeActivity {
                             Uri u = request.getUrl();
                             String msg = u.getQueryParameter("msg");
                             if (msg != null) {
-                                final String decoded = Uri.decode(msg);
-                                Log.i("JS_CONSOLE", "(unified) " + decoded);
-                                // Note: do not update the address bar from bridge log messages.
+                                Log.i("JS_CONSOLE", "(unified) " + Uri.decode(msg));
                             }
                             return true;
                         }
@@ -1515,9 +868,7 @@ public class MainActivity extends BridgeActivity {
                             Uri u = request.getUrl();
                             String msg = u.getQueryParameter("msg");
                             if (msg != null) {
-                                final String decoded = Uri.decode(msg);
-                                Log.i("JS_CONSOLE", decoded);
-                                // Do not update the address bar from bridge log messages.
+                                Log.i("JS_CONSOLE", Uri.decode(msg));
                             }
                             return true;
                         }
@@ -1614,8 +965,6 @@ public class MainActivity extends BridgeActivity {
             } else {
                 Log.w("MainActivity", "Could not obtain underlying WebView instance to configure settings");
             }
-        } catch (Exception e) {
-            Log.w("MainActivity", "Failed to configure WebView settings", e);
         }
     }
 

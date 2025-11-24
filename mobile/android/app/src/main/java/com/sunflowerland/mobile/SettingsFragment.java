@@ -13,8 +13,103 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        // Load preferences from XML first
+        // Load preferences from XML first so findPreference(...) returns actual objects
         setPreferencesFromResource(R.xml.preferences, rootKey);
+
+        // --- Only Notifications Toggle ---
+        SwitchPreferenceCompat onlyNotificationsPref = findPreference("only_notifications");
+
+                // --- No Browser Controls Toggle ---
+                SwitchPreferenceCompat noBrowserControlsPref = findPreference("no_browser_controls");
+                if (noBrowserControlsPref != null) {
+                    SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    if (!prefs.contains("no_browser_controls")) {
+                        prefs.edit().putBoolean("no_browser_controls", true).apply();
+                    }
+                    noBrowserControlsPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                        boolean enabled = Boolean.TRUE.equals(newValue);
+                        android.util.Log.d("SettingsFragment", "No browser controls toggled: " + enabled);
+                        // TODO: Wire this to browser UI logic
+                        return true;
+                    });
+                }
+
+
+                // --- Home Page Editable Field ---
+                Preference homePagePref = findPreference("home_page");
+                if (homePagePref != null) {
+                    SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    final String DEFAULT_URL = "https://sunflower-land.com/play/?ref=iSPANK";
+                    if (!prefs.contains("home_page")) {
+                        prefs.edit().putString("home_page", DEFAULT_URL).apply();
+                        homePagePref.setSummary(DEFAULT_URL);
+                    } else {
+                        String url = prefs.getString("home_page", DEFAULT_URL);
+                        homePagePref.setSummary(url);
+                    }
+                    homePagePref.setOnPreferenceChangeListener((preference, newValue) -> {
+                        String url = (newValue != null) ? newValue.toString().trim() : "";
+                        if (url.isEmpty()) url = DEFAULT_URL;
+                        // Ensure a scheme is present so WebView.loadUrl behaves predictably
+                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                            url = "https://" + url;
+                        }
+                        prefs.edit().putString("home_page", url).apply();
+                        homePagePref.setSummary(url);
+                        android.util.Log.d("SettingsFragment", "Home page set to: " + url);
+                        return true;
+                    });
+                }
+                // --- Home Page 2 Editable Field ---
+                Preference homePage2Pref = findPreference("home_page_2");
+                if (homePage2Pref != null) {
+                    SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    final String DEFAULT_URL2 = "https://sfl.world";
+                    if (!prefs.contains("home_page_2")) {
+                        prefs.edit().putString("home_page_2", DEFAULT_URL2).apply();
+                        homePage2Pref.setSummary(DEFAULT_URL2);
+                    } else {
+                        String url = prefs.getString("home_page_2", DEFAULT_URL2);
+                        homePage2Pref.setSummary(url);
+                    }
+                    homePage2Pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                        String url = (newValue != null) ? newValue.toString().trim() : "";
+                        if (url.isEmpty()) url = DEFAULT_URL2;
+                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                            url = "https://" + url;
+                        }
+                        prefs.edit().putString("home_page_2", url).apply();
+                        homePage2Pref.setSummary(url);
+                        android.util.Log.d("SettingsFragment", "Home page 2 set to: " + url);
+                        return true;
+                    });
+                }
+
+                // --- Home Page 3 Editable Field ---
+                Preference homePage3Pref = findPreference("home_page_3");
+                if (homePage3Pref != null) {
+                    SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext());
+                    final String DEFAULT_URL3 = "https://wiki.sfl.world";
+                    if (!prefs.contains("home_page_3")) {
+                        prefs.edit().putString("home_page_3", DEFAULT_URL3).apply();
+                        homePage3Pref.setSummary(DEFAULT_URL3);
+                    } else {
+                        String url = prefs.getString("home_page_3", DEFAULT_URL3);
+                        homePage3Pref.setSummary(url);
+                    }
+                    homePage3Pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                        String url = (newValue != null) ? newValue.toString().trim() : "";
+                        if (url.isEmpty()) url = DEFAULT_URL3;
+                        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                            url = "https://" + url;
+                        }
+                        prefs.edit().putString("home_page_3", url).apply();
+                        homePage3Pref.setSummary(url);
+                        android.util.Log.d("SettingsFragment", "Home page 3 set to: " + url);
+                        return true;
+                    });
+                }
+        // (preferences already loaded above)
 
         // Debug/Dev: Diagnostics
         Preference diagnosticsPref = findPreference("open_diagnostics");
@@ -28,7 +123,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         // Now wire up 'app to open' visibility and logic
         Preference appToOpenPref = findPreference("app_to_open");
-        SwitchPreferenceCompat onlyNotificationsPref = findPreference("only_notifications");
         if (appToOpenPref != null && onlyNotificationsPref != null) {
             // Set default if blank or unset
             SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(requireContext());
