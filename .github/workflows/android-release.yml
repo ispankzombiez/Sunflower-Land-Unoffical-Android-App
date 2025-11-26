@@ -100,7 +100,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: SFL-Browser latest
+          name: SFL Browser (Latest)
           body: |
             This is the latest release. For version history, see previous releases.
             
