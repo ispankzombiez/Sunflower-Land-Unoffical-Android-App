@@ -100,7 +100,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: SFL Browser (Latest)
+          name: SFL-Browser latest
           body: |
             This is the latest release. For version history, see previous releases.
             
@@ -109,17 +109,5 @@ jobs:
           prerelease: false
           files: mobile/android/app/build/outputs/bundle/release/sfl-browser-v${{ steps.version.outputs.version_name }}.aab
           overwrite_files: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create GitHub Release and Upload APK
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ steps.version.outputs.version_name }}
-          name: Sunflower Land Unofficial v${{ steps.version.outputs.version_name }}
-          body: Automated release of version ${{ steps.version.outputs.version_name }} APK.
-          draft: false
-          prerelease: false
-          files: mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
