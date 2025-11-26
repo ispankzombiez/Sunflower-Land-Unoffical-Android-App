@@ -65,10 +65,10 @@ jobs:
           cd mobile
           npx cap sync android
 
-      - name: Build Release APK
+      - name: Build Release AAB
         run: |
           cd mobile/android
-          ./gradlew assembleRelease
+          ./gradlew bundleRelease
 
 
 
@@ -80,34 +80,34 @@ jobs:
 
 
 
-      - name: Rename APK with version
+      - name: Rename AAB with version
         run: |
-          mv mobile/android/app/build/outputs/apk/release/app-release.apk mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+          mv mobile/android/app/build/outputs/bundle/release/app-release.aab mobile/android/app/build/outputs/bundle/release/sfl-browser-v${{ steps.version.outputs.version_name }}.aab
 
-      - name: Create versioned GitHub Release and Upload APK
+      - name: Create versioned GitHub Release and Upload AAB
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version_name }}
-          name: Sunflower Land Unofficial v${{ steps.version.outputs.version_name }}
-          body: Automated release of version ${{ steps.version.outputs.version_name }} APK.
+          name: SFL Browser v${{ steps.version.outputs.version_name }}
+          body: Automated release of SFL Browser version ${{ steps.version.outputs.version_name }} AAB.
           draft: false
           prerelease: false
-          files: mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+          files: mobile/android/app/build/outputs/bundle/release/sfl-browser-v${{ steps.version.outputs.version_name }}.aab
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update 'latest' GitHub Release with newest APK
+      - name: Update 'latest' GitHub Release with newest AAB
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: Sunflower Land Unofficial (Latest)
+          name: SFL Browser (Latest)
           body: |
             This is the latest release. For version history, see previous releases.
             
             Version: ${{ steps.version.outputs.version_name }}
           draft: false
           prerelease: false
-          files: mobile/android/app/build/outputs/apk/release/sunflower-land-unofficial-v${{ steps.version.outputs.version_name }}.apk
+          files: mobile/android/app/build/outputs/bundle/release/sfl-browser-v${{ steps.version.outputs.version_name }}.aab
           overwrite_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
