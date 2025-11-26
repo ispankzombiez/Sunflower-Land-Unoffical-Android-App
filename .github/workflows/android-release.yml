@@ -65,10 +65,10 @@ jobs:
           cd mobile
           npx cap sync android
 
-      - name: Build Release AAB
+      - name: Build Release APK
         run: |
           cd mobile/android
-          ./gradlew bundleRelease
+          ./gradlew assembleRelease
 
 
 
@@ -80,23 +80,23 @@ jobs:
 
 
 
-      - name: Rename AAB with version
+      - name: Rename APK with version
         run: |
-          mv mobile/android/app/build/outputs/bundle/release/app-release.aab mobile/android/app/build/outputs/bundle/release/sfl-browser-v${{ steps.version.outputs.version_name }}.aab
+          mv mobile/android/app/build/outputs/apk/release/app-release.apk mobile/android/app/build/outputs/apk/release/sfl-browser-v${{ steps.version.outputs.version_name }}.apk
 
-      - name: Create versioned GitHub Release and Upload AAB
+      - name: Create versioned GitHub Release and Upload APK
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version_name }}
           name: SFL Browser v${{ steps.version.outputs.version_name }}
-          body: Automated release of SFL Browser version ${{ steps.version.outputs.version_name }} AAB.
+          body: Automated release of SFL Browser version ${{ steps.version.outputs.version_name }} APK.
           draft: false
           prerelease: false
-          files: mobile/android/app/build/outputs/bundle/release/sfl-browser-v${{ steps.version.outputs.version_name }}.aab
+          files: mobile/android/app/build/outputs/apk/release/sfl-browser-v${{ steps.version.outputs.version_name }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update 'latest' GitHub Release with newest AAB
+      - name: Update 'latest' GitHub Release with newest APK
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
@@ -107,7 +107,7 @@ jobs:
             Version: ${{ steps.version.outputs.version_name }}
           draft: false
           prerelease: false
-          files: mobile/android/app/build/outputs/bundle/release/sfl-browser-v${{ steps.version.outputs.version_name }}.aab
+          files: mobile/android/app/build/outputs/apk/release/sfl-browser-v${{ steps.version.outputs.version_name }}.apk
           overwrite_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
