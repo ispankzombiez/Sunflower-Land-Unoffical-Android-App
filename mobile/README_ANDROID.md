@@ -25,7 +25,7 @@ npm run build
 3. Initialize Capacitor Android once (only first time)
 
 ```powershell
-npx cap init --web-dir=www "sunflower-mobile" "com.sunflowerland.mobile"
+npx cap init --web-dir=www "sunflower-mobile" "com.sfl.browser"
 npx cap add android
 ```
 

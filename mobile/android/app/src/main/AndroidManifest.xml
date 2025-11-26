@@ -44,7 +44,7 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.sunflowerland.mobile.FARM_NOTIFICATION" />
+                <action android:name="com.sfl.browser.FARM_NOTIFICATION" />
             </intent-filter>
         </receiver>
 
