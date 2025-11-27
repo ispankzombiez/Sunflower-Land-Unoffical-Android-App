@@ -247,6 +247,10 @@
             android:title="Tutorial"
             android:summary="View the app tutorial guide" />
         <Preference
+            android:key="credits_button"
+            android:title="Credits"
+            android:summary="View app contributors" />
+        <Preference
             android:key="info_button"
             android:title="Info"
             android:summary="Info about the developer" />

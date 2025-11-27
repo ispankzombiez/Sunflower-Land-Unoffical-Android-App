@@ -15,20 +15,16 @@
         app:titleTextColor="@android:color/white" />
 
     <ScrollView
+        android:id="@+id/info_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tutorial_content"
+        <LinearLayout
+            android:id="@+id/info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:lineSpacingMultiplier="1.5" />
+            android:orientation="vertical" />
 
     </ScrollView>
 

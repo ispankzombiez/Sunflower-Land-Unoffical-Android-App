@@ -236,6 +236,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
         <activity
+            android:name=".CreditsActivity"
+            android:label="Credits"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".InfoActivity"
             android:label="Info"
             android:theme="@style/AppTheme.NoActionBar"

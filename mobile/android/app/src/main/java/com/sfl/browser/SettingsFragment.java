@@ -580,6 +580,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             });
         }
         
+        // Credits button
+        Preference creditsPref = findPreference("credits_button");
+        if (creditsPref != null) {
+            creditsPref.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(getActivity(), CreditsActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
+        
         // Info/About button
         Preference infoPref = findPreference("info_button");
         if (infoPref != null) {
