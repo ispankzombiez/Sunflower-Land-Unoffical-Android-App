@@ -83,11 +83,17 @@ public class TutorialActivity extends AppCompatActivity {
                 "<li>Use the browser controls (back, forward, reload) to navigate</li>" +
                 "<li>Enter URLs in the address bar to visit different pages</li>" +
                 "<li>Customize the default URLs for each tab in Settings</li>" +
+                "<li>Use the tab switcher button (grid icon) to view all open tabs at once</li>" +
                 "</ul>" +
                 
                 "<h3 style=\"color: #e6c97a; border-left: 4px solid #bfa14a; padding-left: 10px; margin-top: 20px;\">🎨 Browser Controls</h3>" +
                 "<p><b style=\"color: #bfa14a;\">Browser Controls Toggle:</b> In Settings, you can hide or show browser navigation controls for a cleaner game view.</p>" +
                 "<p>When hidden, only the game content is visible, but you can still access Settings by triple-tapping with 3 fingers.</p>" +
+                
+                "<h3 style=\"color: #e6c97a; border-left: 4px solid #bfa14a; padding-left: 10px; margin-top: 20px;\">📑 Tab Switcher & Overview</h3>" +
+                "<p><b style=\"color: #bfa14a;\">Tab Switcher Button:</b> Click the grid icon button at the bottom right of the screen to open the tab overview. This displays all three open tabs as live previews in a 2x2 grid layout, allowing you to quickly select which tab to view.</p>" +
+                "<p><b style=\"color: #bfa14a;\">3-Finger Swipe Gesture:</b> Swipe left or right with 3 fingers anywhere on the screen to quickly open the tab overview without using the button. This is a quick way to switch between tabs without touching the interface.</p>" +
+                "<p><b style=\"color: #bfa14a;\">Tab Persistence:</b> All tabs remain active and retain their page state and scroll position, so you can seamlessly switch between them.</p>" +
                 
                 "<h3 style=\"color: #e6c97a; border-left: 4px solid #bfa14a; padding-left: 10px; margin-top: 20px;\">📱 Screen Orientation</h3>" +
                 "<p>In Settings, choose between Portrait and Landscape orientation for your preferred gameplay experience.</p>" +
@@ -113,7 +119,7 @@ public class TutorialActivity extends AppCompatActivity {
                 "<ul>" +
                 "<li>Enable \"Auto Start Worker\" to automatically begin checking for notifications when you open the app</li>" +
                 "<li>Use the three tabs in browser mode to quickly switch between your Farm, the SFL Wiki, and other resources</li>" +
-                "<li>You can also swipe left or right with 3 fingers to switch between tabs quickly</li>" +
+                "<li>Use the tab switcher button (grid icon) to view and select between all open tabs, or swipe left or right with 3 fingers anywhere on the screen to quickly open the tab overview</li>" +
                 "<li>Customize notification categories based on your playstyle - don't get overwhelmed by too many alerts</li>" +
                 "<li>Triple-tap with 3 fingers to access Settings even when browser controls are hidden</li>" +
                 "<li>Keep your API Key secure - it is sensitive account information. This app only uses it on your behalf to fetch your game data and does not share it with third parties.</li>" +
