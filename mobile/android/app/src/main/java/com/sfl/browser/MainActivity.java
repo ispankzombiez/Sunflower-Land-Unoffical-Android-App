@@ -391,29 +391,25 @@ public class MainActivity extends BridgeActivity {
             } catch (Exception ignore) { }
         }
 
-        // Pre-create and load tabs 2 and 3 in the background (in parallel) to ensure they persist and are ready
-        // Don't block tab 1 loading
+        // Pre-create and load tabs 2 and 3 in the background to ensure they persist and are ready
+        // Use Handler to post to UI thread after a delay so tab 1 loads first
+        android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
         for (int bgTab = 2; bgTab <= MAX_TABS; bgTab++) {
             final int tabNum = bgTab;
-            new Thread(() -> {
+            handler.postDelayed(() -> {
                 try {
-                    Thread.sleep(200); // Small delay to let tab 1 settle
-                    try {
-                        if (tabWebViews[tabNum - 1] == null) {
-                            tabWebViews[tabNum - 1] = createTabWebView(tabNum);
-                            String url = getHomeUrlForTab(tabNum);
-                            if (url != null && !url.isEmpty()) {
-                                tabWebViews[tabNum - 1].loadUrl(url);
-                                Log.d("MainActivity", "Background: Pre-loaded tab " + tabNum + " with URL: " + url);
-                            }
+                    if (tabWebViews[tabNum - 1] == null) {
+                        tabWebViews[tabNum - 1] = createTabWebView(tabNum);
+                        String url = getHomeUrlForTab(tabNum);
+                        if (url != null && !url.isEmpty()) {
+                            tabWebViews[tabNum - 1].loadUrl(url);
+                            Log.d("MainActivity", "Pre-loaded tab " + tabNum + " with URL: " + url);
                         }
-                    } catch (Exception e) {
-                        Log.w("MainActivity", "Error pre-loading tab " + tabNum, e);
                     }
                 } catch (Exception e) {
-                    Log.w("MainActivity", "Error in tab " + tabNum + " pre-load thread", e);
+                    Log.w("MainActivity", "Error pre-loading tab " + tabNum, e);
                 }
-            }).start();
+            }, 500 * (tabNum - 1)); // 500ms for tab 2, 1000ms for tab 3
         }
 
         // Ensure WebView content appears above the system navigation bar (soft keys)
