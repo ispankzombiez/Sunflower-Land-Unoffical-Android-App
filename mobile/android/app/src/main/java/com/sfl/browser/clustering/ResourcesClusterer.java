@@ -81,7 +81,7 @@ public class ResourcesClusterer extends CategoryClusterer {
                 int quantity = cluster.size();
                 
                 NotificationGroup group = new NotificationGroup(
-                    "resources",           // category
+                    "resource",            // category
                     resourceName,          // name
                     quantity,              // quantity
                     earliestReadyTime      // earliestReadyTime

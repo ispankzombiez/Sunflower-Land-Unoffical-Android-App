@@ -364,7 +364,7 @@ public class CategoryExtractors {
 
         try {
             // Map of resource types and their key names in the farm object
-            String[] resourceTypes = {"trees", "stones", "iron", "gold", "crimstone", "oil", "sunstone"};
+            String[] resourceTypes = {"trees", "stones", "iron", "gold", "crimstones", "oilReserves", "sunstones"};
             
             for (String resourceType : resourceTypes) {
                 try {
@@ -375,22 +375,24 @@ public class CategoryExtractors {
 
                     JsonObject resourcesObject = farmData.getAsJsonObject(resourceType);
                     
-                    // Convert plural type to singular for Constants lookup
-                    String singularType = resourceType.endsWith("s") ? 
-                        resourceType.substring(0, resourceType.length() - 1).toUpperCase() : 
-                        resourceType.toUpperCase();
-                    
-                    // Handle special cases
-                    if ("STONE".equals(singularType)) {
-                        singularType = "Stone";
-                    } else if ("TREE".equals(singularType)) {
-                        singularType = "Tree";
-                    } else if ("SUNSTONE".equals(singularType)) {
+                    // Convert plural type to singular for Constants lookup and notification name
+                    String singularType;
+                    if ("crimstones".equals(resourceType)) {
+                        singularType = "Crimstone";
+                    } else if ("oilReserves".equals(resourceType)) {
+                        singularType = "Oil";
+                    } else if ("sunstones".equals(resourceType)) {
                         singularType = "Sunstone";
+                    } else if ("STONE".equals(resourceType.toUpperCase())) {
+                        singularType = "Stone";
+                    } else if ("TREE".equals(resourceType.toUpperCase())) {
+                        singularType = "Tree";
                     } else {
-                        // Capitalize first letter: iron -> Iron, gold -> Gold, etc.
-                        singularType = singularType.substring(0, 1).toUpperCase() + 
-                                     singularType.substring(1).toLowerCase();
+                        // Generic plural-to-singular conversion: stones -> Stone, iron -> Iron
+                        String temp = resourceType.endsWith("s") ? 
+                            resourceType.substring(0, resourceType.length() - 1) : 
+                            resourceType;
+                        singularType = temp.substring(0, 1).toUpperCase() + temp.substring(1).toLowerCase();
                     }
                     
                     Log.d(TAG, "Processing " + resourceType + " (looking up: " + singularType + 
@@ -408,8 +410,15 @@ public class CategoryExtractors {
                         try {
                             JsonObject resourceData = resourcesObject.getAsJsonObject(resourceId);
                             
-                            // Determine which field to use (wood for trees, stone for others)
-                            String harvestFieldName = "trees".equals(resourceType) ? "wood" : "stone";
+                            // Determine which field to use (wood for trees, oil for oilReserves, stone for others)
+                            String harvestFieldName;
+                            if ("trees".equals(resourceType)) {
+                                harvestFieldName = "wood";
+                            } else if ("oilReserves".equals(resourceType)) {
+                                harvestFieldName = "oil";
+                            } else {
+                                harvestFieldName = "stone";
+                            }
                             
                             if (!resourceData.has(harvestFieldName)) {
                                 Log.w(TAG, resourceType + " resource " + resourceId + 
@@ -421,7 +430,14 @@ public class CategoryExtractors {
                             
                             // Extract harvest/mine timestamp
                             long harvestedAt = 0;
-                            String timestampField = "trees".equals(resourceType) ? "choppedAt" : "minedAt";
+                            String timestampField;
+                            if ("trees".equals(resourceType)) {
+                                timestampField = "choppedAt";
+                            } else if ("oilReserves".equals(resourceType)) {
+                                timestampField = "drilledAt";
+                            } else {
+                                timestampField = "minedAt";
+                            }
                             
                             if (harvestData.has(timestampField) && 
                                 !harvestData.get(timestampField).isJsonNull()) {
@@ -445,7 +461,7 @@ public class CategoryExtractors {
                             }
                             
                             // Count this resource as amount=1
-                            FarmItem item = new FarmItem("resources", singularType, 1, readyTime);
+                            FarmItem item = new FarmItem("resource", singularType, 1, readyTime);
                             resources.add(item);
                             Log.d(TAG, "Added resource: 1 " + singularType + 
                                   " (harvested=" + formatTimestamp(harvestedAt) + 
@@ -497,7 +513,7 @@ public class CategoryExtractors {
                             }
                             
                             // Each lava pit produces Obsidian
-                            FarmItem item = new FarmItem("resources", "Obsidian", 1, readyAt);
+                            FarmItem item = new FarmItem("resource", "Obsidian", 1, readyAt);
                             resources.add(item);
                             Log.d(TAG, "Added resource: 1 Obsidian from lava pit (ready=" + formatTimestamp(readyAt) + ")");
                             

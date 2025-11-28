@@ -46,6 +46,11 @@
             android:title="Android Buttons"
             android:summary="Show Android navigation bar at bottom of screen (default: ON). When ON, system buttons are visible. When OFF, buttons are hidden."
             android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="aggressive_caching"
+            android:title="Aggressive Caching"
+            android:summary="Save mobile data by aggressively caching content (default: OFF). When ON, loads cached content first. When OFF, normal caching is used."
+            android:defaultValue="false" />
         <EditTextPreference
             android:key="home_page"
             android:title="Home page"

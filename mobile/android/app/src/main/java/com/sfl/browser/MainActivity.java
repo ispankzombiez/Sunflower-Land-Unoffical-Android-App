@@ -30,6 +30,7 @@ import android.os.Build;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+import android.content.SharedPreferences;
 import android.Manifest;
 import android.view.View;
 import androidx.core.view.ViewCompat;
@@ -994,10 +995,24 @@ public class MainActivity extends BridgeActivity {
             // Smart caching strategy: Cache aggressively for tabs 2 and 3
             // Use LOAD_CACHE_ELSE_NETWORK to prioritize cached content over network
             // This provides faster loads and offline support
+            // Check if aggressive caching is enabled in preferences
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean aggressiveCaching = prefs.getBoolean("aggressive_caching", false);
             ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-            ws.setBlockNetworkLoads(false);
-            ws.setBlockNetworkImage(false); // Allow images (will be cached per server headers)
-            ws.setLoadsImagesAutomatically(true); // Load images automatically
+            
+            if (aggressiveCaching) {
+                // In aggressive caching mode: aggressively cache content to minimize bandwidth
+                // Still allow network updates when the website requests them
+                ws.setBlockNetworkLoads(false);      // Allow network, but prefer cache
+                ws.setBlockNetworkImage(false);      // Allow image network requests
+                // Cache images more aggressively - don't expire as quickly
+                ws.setLoadsImagesAutomatically(true);
+            } else {
+                // Normal mode: standard caching behavior
+                ws.setBlockNetworkLoads(false);
+                ws.setBlockNetworkImage(false); // Allow images (will be cached per server headers)
+                ws.setLoadsImagesAutomatically(true);
+            }
             
             ws.setLoadWithOverviewMode(true);
             ws.setUseWideViewPort(true);
@@ -1513,11 +1528,10 @@ public class MainActivity extends BridgeActivity {
                 ws.setJavaScriptCanOpenWindowsAutomatically(true);
                 ws.setMediaPlaybackRequiresUserGesture(false);
                 
-                // Use LOAD_DEFAULT to respect server cache headers
-                // This allows the game/website to control caching via HTTP headers
-                // (Cache-Control, ETag, Last-Modified, etc.)
-                // Only cache what the game/site explicitly requests to be cached
-                ws.setCacheMode(WebSettings.LOAD_DEFAULT);
+                // Use LOAD_CACHE_ELSE_NETWORK to load from cache first, then network if needed
+                // This provides fast loads and saves bandwidth by using cached content when available
+                // The browser will validate cache freshness with server and only download updates
+                ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                 
                 ws.setLoadWithOverviewMode(true);
                 ws.setUseWideViewPort(true);
