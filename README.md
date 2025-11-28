@@ -23,7 +23,7 @@ Want to try the app before anyone else? Join our early access program!
 
 🔗 Or download the latest APK directly from GitHub Releases: **[Go to Latest Release Page](https://github.com/ispankzombiez/Sunflower-Land-Unoffical-Android-App/releases/latest)**
 
-The APK is named <code>sunflower-land-unofficial-v[version].apk</code> and is always available on the latest release page.
+The APK is named <code>SFL-Browser-v[version].apk</code> and is always available on the latest release page.
 
 💬 For more info, or to reach out to the developer iSPANK, go **[here](https://discord.com/channels/880987707214544966/1314031342182338651)**
 
