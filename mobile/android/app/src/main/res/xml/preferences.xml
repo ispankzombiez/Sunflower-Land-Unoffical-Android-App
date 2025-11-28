@@ -41,18 +41,6 @@
             android:title="App to Open"
             android:summary="Select the app to open when a notification is clicked."
         />
-        <EditTextPreference
-            android:key="custom_package_name"
-            android:title="Custom Package Name"
-            android:summary="Enter the package name (e.g., com.uniswap.mobile)"
-            android:inputType="text"
-            android:defaultValue="" />
-        <EditTextPreference
-            android:key="custom_activity_name"
-            android:title="Custom Activity Name"
-            android:summary="Enter the activity name (e.g., com.uniswap.MainActivity)"
-            android:inputType="text"
-            android:defaultValue="" />
         <SwitchPreferenceCompat
             android:key="no_browser_controls"
             android:title="No Browser Controls"
