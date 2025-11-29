@@ -989,12 +989,12 @@ public class MainActivity extends BridgeActivity {
             ws.setMediaPlaybackRequiresUserGesture(false);
             
             // Smart caching strategy: Cache aggressively for tabs 2 and 3
-            // Use LOAD_CACHE_ELSE_NETWORK to prioritize cached content over network
-            // This provides faster loads and offline support
-            // Check if aggressive caching is enabled in preferences
+            // Always use LOAD_CACHE_ELSE_NETWORK for tabs 2 and 3 to save bandwidth
+            // These tabs (sfl.world and wiki) benefit from caching
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             boolean aggressiveCaching = prefs.getBoolean("aggressive_caching", false);
             ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            Log.d("MainActivity", "Tab " + tab + ": Using LOAD_CACHE_ELSE_NETWORK");
             
             if (aggressiveCaching) {
                 // In aggressive caching mode: aggressively cache content to minimize bandwidth
@@ -1524,10 +1524,17 @@ public class MainActivity extends BridgeActivity {
                 ws.setJavaScriptCanOpenWindowsAutomatically(true);
                 ws.setMediaPlaybackRequiresUserGesture(false);
                 
-                // Use LOAD_CACHE_ELSE_NETWORK to load from cache first, then network if needed
-                // This provides fast loads and saves bandwidth by using cached content when available
-                // The browser will validate cache freshness with server and only download updates
-                ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                // Tab 1: Use LOAD_DEFAULT (normal caching) unless aggressive caching is enabled
+                // This ensures the game loads properly without stale cache issues
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean aggressiveCaching = prefs.getBoolean("aggressive_caching", false);
+                if (aggressiveCaching) {
+                    ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                    Log.d("MainActivity", "Tab 1: Using LOAD_CACHE_ELSE_NETWORK (aggressive caching enabled)");
+                } else {
+                    ws.setCacheMode(WebSettings.LOAD_DEFAULT);
+                    Log.d("MainActivity", "Tab 1: Using LOAD_DEFAULT (normal mode)");
+                }
                 
                 ws.setLoadWithOverviewMode(true);
                 ws.setUseWideViewPort(true);
