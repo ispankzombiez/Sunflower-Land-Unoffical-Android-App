@@ -49,6 +49,34 @@ public class CreditsActivity extends AppCompatActivity {
         divider1.setLayoutParams(dividerParams);
         container.addView(divider1);
         
+        // Andrei contributor
+        TextView contributorAndrei = new TextView(this);
+        contributorAndrei.setTextSize(16);
+        contributorAndrei.setLineSpacing(1.5f, 1.5f);
+        contributorAndrei.setPadding(0, 0, 0, 16);
+        String contributorAndreiHtml = "<p style=\"color: #e6e6e6; margin: 0 0 8px 0;\"><b style=\"color: #bfa14a;\">🌐 Andrei</b></p>" +
+                "<p style=\"color: #e6c97a; margin: 0 0 8px 0;\">Creator and operator of SFL World and SFL Wiki</p>" +
+                "<p style=\"color: #e6e6e6; margin: 0;\">Farm: <a href=\"https://sunflower-land.com/play/#/visit/114779\" style=\"color: #c9b26d;\">https://sunflower-land.com/play/#/visit/114779</a></p>" +
+                "<p style=\"color: #e6e6e6; margin: 4px 0 0 0;\">SFL World: <a href=\"https://sfl.world/\" style=\"color: #c9b26d;\">https://sfl.world/</a></p>" +
+                "<p style=\"color: #e6e6e6; margin: 4px 0 0 0;\">SFL Wiki: <a href=\"https://wiki.sfl.world/\" style=\"color: #c9b26d;\">https://wiki.sfl.world/</a></p>";
+        Spanned contributorAndreiSpanned = Html.fromHtml(contributorAndreiHtml, Html.FROM_HTML_MODE_LEGACY);
+        contributorAndrei.setText(contributorAndreiSpanned);
+        contributorAndrei.setMovementMethod(new SunflowerLandLinkHandler(this));
+        container.addView(contributorAndrei);
+        
+        // Divider
+        TextView dividerAndrei = new TextView(this);
+        dividerAndrei.setHeight(2);
+        dividerAndrei.setBackgroundColor(android.graphics.Color.parseColor("#bfa14a"));
+        dividerAndrei.setPadding(0, 0, 0, 0);
+        LinearLayout.LayoutParams dividerParamsAndrei = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            2
+        );
+        dividerParamsAndrei.setMargins(0, 0, 0, 16);
+        dividerAndrei.setLayoutParams(dividerParamsAndrei);
+        container.addView(dividerAndrei);
+        
         // Kohirabbit contributor
         TextView contributor1 = new TextView(this);
         contributor1.setTextSize(16);
